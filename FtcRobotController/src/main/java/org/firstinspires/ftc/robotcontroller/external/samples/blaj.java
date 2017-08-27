@@ -12,11 +12,13 @@ public class blaj extends OpMode {
 
     DcMotor Cool;
     DcMotor Cool2;
+    DcMotor Cool3;
 
     public void init() {
 
         Cool = hardwareMap.dcMotor.get("left");
         Cool2 = hardwareMap.dcMotor.get("right");
+
     }
 
     public void loop() {
