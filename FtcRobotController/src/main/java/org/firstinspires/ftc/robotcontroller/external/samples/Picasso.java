@@ -18,7 +18,7 @@ public class Picasso extends OpMode {
     public void init() {
 
         FrontMotor1 = hardwareMap.dcMotor.get("FrontMotor1");
-        FrontMotor2 = hardwareMap.dcMotor.get("FrontMotor1");
+        FrontMotor2 = hardwareMap.dcMotor.get("FrontMotor2");
         servo1 = hardwareMap.servo.get("servo1");
 
     }
