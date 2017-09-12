@@ -13,7 +13,7 @@ For more information, visit modernroboticsedu.com.
 Support is available by emailing support@modernroboticsinc.com.
 */
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
