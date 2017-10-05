@@ -1,84 +1,83 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.LinearGradient;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import static java.lang.Math.abs;
 
 @TeleOp(name = "Leon's Final Program")
-public class LZFinalProgram extends OpMode {
+public class LZFinalProgram extends LinearOpMode {
 
     LZRobot robot = new LZRobot();
 
-    public void init(){
+    public void runOpMode() {
 
         robot.init(hardwareMap);
         telemetry.addData("Initialization", "Completed");
         telemetry.update();
 
-    }
+        waitForStart();
+
+        while (opModeIsActive()) {
+            if (gamepad2.x) {
+
+                robot.Coll.setPower(1.0);
+
+            } else if (gamepad2.b) {
+
+                robot.Coll.setPower(0);
+
+            }
+
+            if (gamepad2.y) {
+
+                robot.Arm.setPower(1.0);
+
+            } else if (gamepad2.a) {
+
+                robot.Arm.setPower(0);
+
+            }
 
 
-    public void loop() {
+            float leftY = gamepad1.left_stick_y;
+            float leftX = gamepad1.left_stick_x;
+            float rightX = gamepad1.right_stick_x;
 
-        if(gamepad2.x) {
+            float L = -leftY+leftX;
 
-            robot.Coll.setPower(1.0);
+            float R = -leftY-leftX;
 
-        }
+            float max=abs(L);
 
-        else if(gamepad2.b){
+            if(max<abs(R)) max=abs(R);
 
-            robot.Coll.setPower(0);
+            if(max>1){L/=max; R/=max;}
 
-        }
+            robot.BackMotor1.setPower(L);
+            robot.FrontMotor1.setPower(L);
+            robot.BackMotor2.setPower(-leftY);
+            robot.FrontMotor2.setPower(-leftY);
+            robot.BackMotor2.setPower(R);
+            robot.BackMotor2.setPower(R);
+            robot.BackMotor1.setPower(-leftY);
+            robot.FrontMotor1.setPower(-leftY);
 
-        if(gamepad2.y) {
-
-            robot.Arm.setPower(1.0);
-
-        }
-        else if(gamepad2.a) {
-
-            robot.Arm.setPower(0);
-
-        }
-
-
-
-
-        double leftY = -gamepad1.left_stick_y;
-        double leftX = gamepad1.left_stick_x;
-        double rightX = gamepad1.right_stick_x;
-
-        if(leftY > 0) {
-
-            robot.move("forwards", leftY);
-
-        } else {
-
-            robot.move("backwards", -leftY);
-
-        }
-
-        if(leftX > 0) {
-
+            /*
             robot.move("left", -leftX);
 
-        } else {
-
             robot.move("right", leftX);
-
-        }
-
-        if(rightX > 0) {
-
+            */
+            /*
             robot.rotate("clock", rightX);
 
-        } else {
-
             robot.rotate("cclock", -rightX);
+            */
 
+            }
         }
-
     }
-
-}

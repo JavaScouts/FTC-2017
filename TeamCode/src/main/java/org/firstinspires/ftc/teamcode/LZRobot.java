@@ -59,37 +59,42 @@ public class LZRobot {
 
     //function move takes a direction and a power
     //probably a better way to do this
-    public void move(String dir, double power) {
+    void move(String dir, float power) {
 
         //self explanatory
-        if(dir == "left") {
+        switch (dir) {
+            case "left":
 
-            BackMotor1.setPower(power);
-            FrontMotor1.setPower(-power);
-            BackMotor2.setPower(-power);
-            FrontMotor2.setPower(power);
+                BackMotor1.setPower(power);
+                FrontMotor1.setPower(-power);
+                BackMotor2.setPower(-power);
+                FrontMotor2.setPower(power);
 
-        } else if(dir == "right") {
+                break;
+            case "right":
 
-            BackMotor1.setPower(-power);
-            FrontMotor1.setPower(power);
-            BackMotor2.setPower(power);
-            FrontMotor2.setPower(-power);
+                BackMotor1.setPower(-power);
+                FrontMotor1.setPower(power);
+                BackMotor2.setPower(power);
+                FrontMotor2.setPower(-power);
 
-        } else if(dir == "forwards") {
+                break;
+            case "forwards":
 
-            BackMotor1.setPower(power);
-            FrontMotor1.setPower(power);
-            BackMotor2.setPower(power);
-            FrontMotor2.setPower(power);
+                BackMotor1.setPower(power);
+                FrontMotor1.setPower(power);
+                BackMotor2.setPower(power);
+                FrontMotor2.setPower(power);
 
-        } else if(dir == "backwards") {
+                break;
+            case "backwards":
 
-            BackMotor1.setPower(-power);
-            FrontMotor1.setPower(-power);
-            BackMotor2.setPower(-power);
-            FrontMotor2.setPower(-power);
+                BackMotor1.setPower(-power);
+                FrontMotor1.setPower(-power);
+                BackMotor2.setPower(-power);
+                FrontMotor2.setPower(-power);
 
+                break;
         }
 
     }
@@ -98,14 +103,14 @@ public class LZRobot {
     public void rotate(String dir, double power) {
 
         //self explanatory rotation for mecanum wheels
-        if(dir == "cclock") {
+        if(dir.equals("cclock")) {
 
             BackMotor1.setPower(-power);
             FrontMotor1.setPower(-power);
             BackMotor2.setPower(power);
             FrontMotor2.setPower(power);
 
-        } else if(dir == "clock") {
+        } else if(dir.equals("clock")) {
 
             BackMotor1.setPower(power);
             FrontMotor1.setPower(power);
