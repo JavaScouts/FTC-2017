@@ -13,6 +13,10 @@ import static java.lang.Math.abs;
 public class LZFinalProgram extends LinearOpMode {
 
     LZRobot robot = new LZRobot();
+    float X1=0;
+    float X2=0;
+    float Y1=0;
+    double threshold = 0.05;
 
     public void runOpMode() {
 
@@ -48,36 +52,25 @@ public class LZFinalProgram extends LinearOpMode {
             float leftX = gamepad1.left_stick_x;
             float rightX = gamepad1.right_stick_x;
 
-            float L = -leftY+leftX;
-
-            float R = -leftY-leftX;
-
-            float max=abs(L);
-
-            if(max<abs(R)) max=abs(R);
-
-            if(max>1){L/=max; R/=max;}
-
-            robot.BackMotor1.setPower(L);
-            robot.FrontMotor1.setPower(L);
-            robot.BackMotor2.setPower(-leftY);
-            robot.FrontMotor2.setPower(-leftY);
-            robot.BackMotor2.setPower(R);
-            robot.BackMotor2.setPower(R);
-            robot.BackMotor1.setPower(-leftY);
-            robot.FrontMotor1.setPower(-leftY);
-
-            /*
-            robot.move("left", -leftX);
-
-            robot.move("right", leftX);
-            */
-            /*
-            robot.rotate("clock", rightX);
-
-            robot.rotate("cclock", -rightX);
-            */
-
+            if(abs(leftY) > threshold) {
+                Y1=leftY;
+            } else {
+                Y1=0;
+            }
+            if(abs(leftX) > threshold) {
+                X1=leftX;
+            } else {
+                X1=0;
+            }
+            if(abs(rightX) > threshold) {
+                X2=rightX;
+            } else {
+                X2=0;
+            }
+            robot.FrontMotor1.setPower(Y1 - X2 - X1);
+            robot.BackMotor1.setPower(Y1 - X2 + X1);
+            robot.FrontMotor2.setPower(Y1 + X2 + X1);
+            robot.BackMotor2.setPower(Y1 + X2 - X1);
             }
         }
     }
