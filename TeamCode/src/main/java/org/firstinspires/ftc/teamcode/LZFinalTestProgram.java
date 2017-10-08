@@ -10,9 +10,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import static java.lang.Math.abs;
 
 @TeleOp(name = "Leon's Final Program")
-public class LZFinalProgram extends LinearOpMode {
+public class LZFinalTestProgram extends LinearOpMode {
 
-    LZRobot robot = new LZRobot();
+    LZTestChassis robot = new LZTestChassis();
     float X1=0;
     float X2=0;
     float Y1=0;
@@ -27,26 +27,12 @@ public class LZFinalProgram extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            if (gamepad2.x) {
 
-                robot.Coll.setPower(1.0);
+            float s1 = gamepad2.left_stick_y;
+            float s2 = gamepad2.right_stick_y;
 
-            } else if (gamepad2.b) {
-
-                robot.Coll.setPower(0);
-
-            }
-
-            if (gamepad2.y) {
-
-                robot.Arm.setPower(1.0);
-
-            } else if (gamepad2.a) {
-
-                robot.Arm.setPower(0);
-
-            }
-
+            robot.servo1.setPosition(s1);
+            robot.servo2.setPosition(s2);
 
             float leftY = gamepad1.left_stick_y;
             float leftX = gamepad1.left_stick_x;
