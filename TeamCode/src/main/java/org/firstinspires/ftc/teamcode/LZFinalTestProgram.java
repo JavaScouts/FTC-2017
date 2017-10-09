@@ -28,11 +28,19 @@ public class LZFinalTestProgram extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            float s1 = gamepad2.left_stick_y;
-            float s2 = gamepad2.right_stick_y;
+            //float s1 = gamepad2.left_stick_y;
+            //float s2 = gamepad2.right_stick_y;
+            if(gamepad2.x) {
+                robot.servo1.setPosition(0.64);
+                robot.servo2.setPosition(0.34);
+            } else {
+                robot.servo1.setPosition(0);
+                robot.servo2.setPosition(0.75);
+            }
 
-            robot.servo1.setPosition(s1);
-            robot.servo2.setPosition(s2);
+            telemetry.addData("servopos", robot.servo1.getPosition());
+            telemetry.addData("servo2pos", robot.servo2.getPosition());
+            telemetry.update();
 
             float leftY = gamepad1.left_stick_y;
             float leftX = gamepad1.left_stick_x;
