@@ -13,10 +13,7 @@ import static java.lang.Math.abs;
 public class LZFinalTestProgram extends LinearOpMode {
 
     LZTestChassis robot = new LZTestChassis();
-    float X1 = 0;
-    float X2 = 0;
-    float Y1 = 0;
-    double threshold = 0.05;
+
 
     public void runOpMode() {
 
@@ -43,28 +40,11 @@ public class LZFinalTestProgram extends LinearOpMode {
             float leftY = gamepad1.left_stick_y;
             float leftX = gamepad1.left_stick_x;
             float rightX = gamepad1.right_stick_x;
-            float left2 = -gamepad1.left_stick_y;
+            float left2 = -gamepad2.left_stick_y;
 
-            if (abs(leftY) > threshold) {
-                    Y1 = leftY;
-                } else {
-                    Y1 = 0;
-                }
-                if (abs(leftX) > threshold) {
-                    X1 = leftX;
-                } else {
-                    X1 = 0;
-                }
-                if (abs(rightX) > threshold) {
-                    X2 = rightX;
-                } else {
-                    X2 = 0;
-                }
-                robot.FrontMotor1.setPower(Y1 - X2 - X1);
-                robot.BackMotor1.setPower(Y1 - X2 + X1);
-                robot.FrontMotor2.setPower(Y1 + X2 + X1);
-                robot.BackMotor2.setPower(Y1 + X2 - X1);
-                robot.Arm.setPower(left2);
+            robot.mecDrive(leftY, leftX, rightX, 0.05);
+            robot.Arm.setPower(left2);
+
             }
         }
     }

@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import java.util.concurrent.TimeUnit;
 
+import static java.lang.Math.abs;
+
 /**
  * Created by seed on 9/11/17.
  */
@@ -20,6 +22,9 @@ public class LZTestChassis {
     public DcMotor Arm;
     public Servo servo1;
     public Servo servo2;
+    public float Y1;
+    public float X1;
+    public float X2;
 
     //create map
     HardwareMap map;
@@ -97,6 +102,31 @@ public class LZTestChassis {
 
                 break;
         }
+
+    }
+
+    public void mecDrive(float leftY, float leftX, float rightX, double threshold) {
+
+        if (abs(leftY) > threshold) {
+            Y1 = leftY;
+        } else {
+            Y1 = 0;
+        }
+        if (abs(leftX) > threshold) {
+            X1 = leftX;
+        } else {
+            X1 = 0;
+        }
+        if (abs(rightX) > threshold) {
+            X2 = rightX;
+        } else {
+            X2 = 0;
+        }
+
+        FrontMotor1.setPower(Y1 - X2 - X1);
+        BackMotor1.setPower(Y1 - X2 + X1);
+        FrontMotor2.setPower(Y1 + X2 + X1);
+        BackMotor2.setPower(Y1 + X2 - X1);
 
     }
 
