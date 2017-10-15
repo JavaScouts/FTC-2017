@@ -60,6 +60,7 @@ public class LZTestChassis {
         FrontMotor2.setPower(0);
         BackMotor1.setPower(0);
         BackMotor2.setPower(0);
+        Arm.setPower(0);
 
     }
 

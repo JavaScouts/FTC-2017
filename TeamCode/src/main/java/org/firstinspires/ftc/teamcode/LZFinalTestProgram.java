@@ -9,11 +9,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import static java.lang.Math.abs;
 
-@TeleOp(name = "Leon's Final Program")
+@TeleOp(name = "LZFinalTestProgrm")
 public class LZFinalTestProgram extends LinearOpMode {
 
     LZTestChassis robot = new LZTestChassis();
-
 
     public void runOpMode() {
 
@@ -30,21 +29,40 @@ public class LZFinalTestProgram extends LinearOpMode {
                 robot.servo2.setPosition(0.34);
             } else {
                 robot.servo1.setPosition(0);
-                robot.servo2.setPosition(0.75);
+                robot.servo2.setPosition(0.80);
             }
 
                 //           telemetry.addData("servopos", robot.servo1.getPosition());
                 //         telemetry.addData("servo2pos", robot.servo2.getPosition());
                 //       telemetry.update();
 
-            float leftY = gamepad1.left_stick_y;
-            float leftX = gamepad1.left_stick_x;
+            float leftY = -gamepad1.left_stick_y;
+            float leftX = -gamepad1.left_stick_x;
             float rightX = gamepad1.right_stick_x;
-            float left2 = -gamepad2.left_stick_y;
+            float quck = -gamepad2.left_stick_y;
 
-            robot.mecDrive(leftY, leftX, rightX, 0.05);
-            robot.Arm.setPower(left2);
-
+            if (abs(leftY) > threshold) {
+                Y1 = leftY;
+            } else {
+                Y1 = 0;
             }
+            if (abs(leftX) > threshold) {
+                X1 = leftX;
+            } else {
+                X1 = 0;
+            }
+            if (abs(rightX) > threshold) {
+                X2 = rightX;
+            } else {
+                X2 = 0;
+            }
+
+            FrontMotor1.setPower(Y1 - X2 - X1);
+            BackMotor1.setPower(Y1 - X2 + X1);
+            FrontMotor2.setPower(Y1 + X2 + X1);
+            BackMotor2.setPower(Y1 + X2 - X1);
+            robot.Arm.setPower(quck);
+
         }
     }
+}
