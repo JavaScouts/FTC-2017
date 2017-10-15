@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode;
-
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import java.util.concurrent.TimeUnit;
 
@@ -18,6 +18,7 @@ public class LZRobot {
     public DcMotor BackMotor2;
     public DcMotor Coll;
     public DcMotor Arm;
+    //public Servo servo1;
 
     //create map
     HardwareMap map;
@@ -33,6 +34,7 @@ public class LZRobot {
         BackMotor2 = map.dcMotor.get("BackMotor2");
         Coll = map.dcMotor.get("Collector");
         Arm = map.dcMotor.get("Arm");
+        //servo1 = map.servo.get("s1");
 
         //set directions
         FrontMotor1.setDirection(DcMotor.Direction.FORWARD);

@@ -25,8 +25,8 @@ public class FinalProgram extends OpMode {
 
         FrontMotor1 = hardwareMap.dcMotor.get("FrontMotor1");
         FrontMotor2 = hardwareMap.dcMotor.get("FrontMotor2");
-        Coll = hardwareMap.dcMotor.get("Collector");
-        Arm = hardwareMap.dcMotor.get("Arm");
+        //Coll = hardwareMap.dcMotor.get("Collector");
+        //Arm = hardwareMap.dcMotor.get("Arm");
 
         BackMotor1 = hardwareMap.dcMotor.get("BackMotor1");
         BackMotor2 = hardwareMap.dcMotor.get("BackMotor2");
@@ -59,18 +59,18 @@ public class FinalProgram extends OpMode {
 
 
 
-        if (gamepad2.x) {
-            Coll.setPower(1.0);
-        }
-        else if (gamepad2.b){
-            Coll.setPower(0);
-        }
-        if(gamepad2.y) {
-            Arm.setPower(1.0);
-        }
-        else if (gamepad2.a) {
-            Arm.setPower(0);
-        }
+       // if (gamepad2.x) {
+        //    Coll.setPower(1.0);
+        //}
+        //else if (gamepad2.b){
+         //   Coll.setPower(0);
+        //}
+        //if(gamepad2.y) {
+         //   Arm.setPower(1.0);
+        //}
+        //else if (gamepad2.a) {
+          //  Arm.setPower(0);
+       // }
 
 
 

@@ -17,6 +17,7 @@ public class LZTestChassis {
     public DcMotor FrontMotor2;
     public DcMotor BackMotor1;
     public DcMotor BackMotor2;
+    public DcMotor Arm;
     public Servo servo1;
     public Servo servo2;
 
@@ -34,6 +35,7 @@ public class LZTestChassis {
         BackMotor2 = map.dcMotor.get("Right1");
         servo1 = map.servo.get("s1");
         servo2 = map.servo.get("s2");
+        Arm = map.dcMotor.get("arm");
 
         //set directions
         FrontMotor1.setDirection(DcMotor.Direction.FORWARD);
