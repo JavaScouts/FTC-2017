@@ -41,26 +41,7 @@ public class LZFinalTestProgram extends LinearOpMode {
             float rightX = gamepad1.right_stick_x;
             float quck = -gamepad2.left_stick_y;
 
-            if (abs(leftY) > threshold) {
-                Y1 = leftY;
-            } else {
-                Y1 = 0;
-            }
-            if (abs(leftX) > threshold) {
-                X1 = leftX;
-            } else {
-                X1 = 0;
-            }
-            if (abs(rightX) > threshold) {
-                X2 = rightX;
-            } else {
-                X2 = 0;
-            }
-
-            FrontMotor1.setPower(Y1 - X2 - X1);
-            BackMotor1.setPower(Y1 - X2 + X1);
-            FrontMotor2.setPower(Y1 + X2 + X1);
-            BackMotor2.setPower(Y1 + X2 - X1);
+            robot.mecDrive(leftY, leftX, rightX, 0.05);
             robot.Arm.setPower(quck);
 
         }
