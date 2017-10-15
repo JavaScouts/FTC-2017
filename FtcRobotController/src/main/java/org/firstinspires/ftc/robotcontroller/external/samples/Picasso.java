@@ -28,16 +28,15 @@ public class Picasso extends OpMode {
         if(gamepad1.a){
             servo1.setPosition(0.5);
         }
-        if (gamepad1.b){
-            servo1.setPosition(0);
+        else if (gamepad1.b){
+            servo1.setPosition(0.1);
         }
-
 
         float leftjoy = -gamepad1.left_stick_y;
         float rightjoy = -gamepad1.right_stick_y;
 
         FrontMotor1.setPower(leftjoy);
-        FrontMotor2.setPower(rightjoy);
+        FrontMotor2.setPower(-rightjoy);
 
 
     }
