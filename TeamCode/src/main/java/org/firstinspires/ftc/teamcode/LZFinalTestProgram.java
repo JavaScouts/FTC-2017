@@ -39,10 +39,10 @@ public class LZFinalTestProgram extends LinearOpMode {
             float leftY = -gamepad1.left_stick_y;
             float leftX = -gamepad1.left_stick_x;
             float rightX = gamepad1.right_stick_x;
-            float quck = -gamepad2.left_stick_y;
+            float leftY2 = -gamepad2.left_stick_y;
 
             robot.mecDrive(leftY, leftX, rightX, 0.05);
-            robot.Arm.setPower(quck);
+            robot.Arm.setPower(leftY2 * 0.5);
 
         }
     }
