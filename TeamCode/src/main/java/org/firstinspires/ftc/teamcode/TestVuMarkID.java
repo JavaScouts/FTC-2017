@@ -148,7 +148,6 @@ public class TestVuMarkID extends LinearOpMode {
                  * it is perhaps unlikely that you will actually need to act on this pose information, but
                  * we illustrate it nevertheless, for completeness. */
                 OpenGLMatrix pose = ((VuforiaTrackableDefaultListener)relicTemplate.getListener()).getPose();
-                telemetry.addData("Pose", format(pose));
 
                 /* We further illustrate how to decompose the pose into useful rotational and
                  * translational components */
@@ -160,11 +159,18 @@ public class TestVuMarkID extends LinearOpMode {
                     double tX = trans.get(0);
                     double tY = trans.get(1);
                     double tZ = trans.get(2);
+                    telemetry.addData("transX", tX);
+                    telemetry.addData("transY", tY);
+                    telemetry.addData("transZ", tZ);
 
                     // Extract the rotational components of the target relative to the robot
                     double rX = rot.firstAngle;
                     double rY = rot.secondAngle;
                     double rZ = rot.thirdAngle;
+                    telemetry.addData("rotX", rX);
+                    telemetry.addData("rotY", rY);
+                    telemetry.addData("rotZ", rZ);
+
                 }
             }
             else {

@@ -12,7 +12,7 @@ import static java.lang.Math.abs;
 @TeleOp(name = "LZFinalTestProgrm")
 public class LZFinalTestProgram extends LinearOpMode {
 
-    LZTestChassis robot = new LZTestChassis();
+    LZRobot robot = new LZRobot();
 
     public void runOpMode() {
 

@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.robotcontroller.external.samples;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.robot.Robot;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -18,10 +17,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.R.attr.angle;
-import static android.R.attr.targetName;
-import static android.view.View.X;
 
 /**
  * This is NOT an opmode.
@@ -42,8 +37,10 @@ public class VU_Robot_Navigation
     // Constants
     private static final int     MAX_TARGETS    =   4;
     private static final double  ON_AXIS        =  10;      // Within 1.0 cm of target center-line
-    private static final double  CLOSE_ENOUGH   =  20;      // Within 2.0 cm of final target standoff
-
+    private static final double  CLOSE_ENOUGH   =  40;      // Within 4.0 cm of final target standoff
+    float mmPerInch        = 25.4f;
+    float mmBotWidth       = 18 * mmPerInch;            // ... or whatever is right for your robot
+    float mmFTCFieldWidth  = (12*12 - 2) * mmPerInch;
     // Select which camera you want use.  The FRONT camera is the one on the same side as the screen.  Alt. is BACK
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = VuforiaLocalizer.CameraDirection.FRONT;
 
@@ -53,7 +50,7 @@ public class VU_Robot_Navigation
 
     /* Private class members. */
     private LinearOpMode        myOpMode;       // Access to the OpMode object
-    private VU_Robot_OmniDrive     myRobot;        // Access to the Robot hardware
+    private VU_Robot_OmniDrive myRobot;        // Access to the Robot hardware
     private VuforiaTrackables   targets;        // List of active targets
 
     // Navigation data is only valid if targetFound == true;
@@ -181,7 +178,7 @@ public class VU_Robot_Navigation
          * They represent the four image targets used in the 2016-17 FTC game.
          */
         targets = vuforia.loadTrackablesFromAsset("RelicVuMark");
-        targets.get(0).setName("Blue Near");
+        targets.get(0).setName("VuMark");
 
         /** For convenience, gather together all the trackable objects in one easily-iterable collection */
         List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();

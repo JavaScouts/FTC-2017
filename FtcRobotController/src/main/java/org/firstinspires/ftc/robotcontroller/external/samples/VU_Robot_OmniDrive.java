@@ -3,6 +3,7 @@ package org.firstinspires.ftc.robotcontroller.external.samples;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -35,8 +36,8 @@ public class VU_Robot_OmniDrive
 
     private DcMotor  leftDrive      = null;
     private DcMotor  rightDrive     = null;
-    private DcMotor  backDrive      = null;
-
+    private DcMotor  backLDrive     = null;
+    private DcMotor  backRDrive     = null;
     private double  driveAxial      = 0 ;   // Positive is forward
     private double  driveLateral    = 0 ;   // Positive is right
     private double  driveYaw        = 0 ;   // Positive is CCW
@@ -54,13 +55,17 @@ public class VU_Robot_OmniDrive
         myOpMode = opMode;
 
         // Define and Initialize Motors
-        leftDrive        = myOpMode.hardwareMap.get(DcMotor.class, "left drive");
-        rightDrive       = myOpMode.hardwareMap.get(DcMotor.class, "right drive");
-        backDrive        = myOpMode.hardwareMap.get(DcMotor.class, "back drive");
+        leftDrive        = myOpMode.hardwareMap.get(DcMotor.class, "FrontMotor1");
+        rightDrive       = myOpMode.hardwareMap.get(DcMotor.class, "FrontMotor2");
+        backLDrive       = myOpMode.hardwareMap.get(DcMotor.class, "BackMotor1");
+        backRDrive       = myOpMode.hardwareMap.get(DcMotor.class, "BackMotor2");
+
 
         leftDrive.setDirection(DcMotor.Direction.FORWARD); // Positive input rotates counter clockwise
         rightDrive.setDirection(DcMotor.Direction.FORWARD);// Positive input rotates counter clockwise
-        backDrive.setDirection(DcMotor.Direction.FORWARD); // Positive input rotates counter clockwise
+        backLDrive.setDirection(DcMotor.Direction.FORWARD); // Positive input rotates counter clockwise
+        backRDrive.setDirection(DcMotor.Direction.FORWARD);
+
 
         //use RUN_USING_ENCODERS because encoders are installed.
         setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -70,14 +75,14 @@ public class VU_Robot_OmniDrive
     }
 
     public void manualDrive()  {
-        // In this mode the Left stick moves the robot fwd & back, and Right & Left.
-        // The Right stick rotates CCW and CW.
+    // In this mode the Left stick moves the robot fwd & back, and Right & Left.
+    // The Right stick rotates CCW and CW.
 
-        //  (note: The joystick goes negative when pushed forwards, so negate it)
-        setAxial(-myOpMode.gamepad1.left_stick_y);
-        setLateral(myOpMode.gamepad1.left_stick_x);
-        setYaw(-myOpMode.gamepad1.right_stick_x);
-    }
+    //  (note: The joystick goes negative when pushed forwards, so negate it)
+    setAxial(-myOpMode.gamepad1.left_stick_y);
+    setLateral(myOpMode.gamepad1.left_stick_x);
+    setYaw(-myOpMode.gamepad1.right_stick_x);
+}
 
 
     /***
@@ -109,28 +114,32 @@ public class VU_Robot_OmniDrive
      */
     public void moveRobot() {
         // calculate required motor speeds to acheive axis motions
-        double back = driveYaw + driveLateral;
-        double left = driveYaw - driveAxial - (driveLateral * 0.5);
-        double right = driveYaw + driveAxial - (driveLateral * 0.5);
+        double left = driveAxial - driveLateral + driveYaw;
+        double right = driveAxial + driveLateral -driveYaw;
+        double backL = driveAxial + driveLateral + driveYaw;
+        double backR = driveAxial - driveLateral - driveYaw;
 
         // normalize all motor speeds so no values exceeds 100%.
-        double max = Math.max(Math.abs(back), Math.abs(right));
-        max = Math.max(max, Math.abs(left));
+        double max = Math.max(Math.abs(left), Math.abs(right));
+        max = Math.max(max, Math.abs(backL));
+        max = Math.max(max, Math.abs(backR));
         if (max > 1.0)
         {
-            back /= max;
+            backR /= max;
+            backL /= max;
             right /= max;
             left /= max;
         }
 
         // Set drive motor power levels.
-        backDrive.setPower(back);
+        backLDrive.setPower(backL);
+        backRDrive.setPower(backR);
         leftDrive.setPower(left);
         rightDrive.setPower(right);
 
         // Display Telemetry
         myOpMode.telemetry.addData("Axes  ", "A[%+5.2f], L[%+5.2f], Y[%+5.2f]", driveAxial, driveLateral, driveYaw);
-        myOpMode.telemetry.addData("Wheels", "L[%+5.2f], R[%+5.2f], B[%+5.2f]", left, right, back);
+        myOpMode.telemetry.addData("Wheels", "L[%+5.2f], R[%+5.2f], B[%+5.2f]", left, right, backL, backR);
     }
 
 
@@ -146,7 +155,8 @@ public class VU_Robot_OmniDrive
     public void setMode(DcMotor.RunMode mode ) {
         leftDrive.setMode(mode);
         rightDrive.setMode(mode);
-        backDrive.setMode(mode);
+        backLDrive.setMode(mode);
+        backRDrive.setMode(mode);
     }
 }
 
