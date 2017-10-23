@@ -85,7 +85,7 @@ public class LZTestVuforiaAuto extends LinearOpMode {
 
     @Override public void runOpMode() {
 
-        robot.init(hardwareMap);
+        robot.init(hardwareMap, this);
 
         /*
          * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);
@@ -175,11 +175,11 @@ public class LZTestVuforiaAuto extends LinearOpMode {
                 }
 
                 VectorF trans = pose.getTranslation();
-                if(trans.get(0) > xToTarget) {
+                //if(trans.get(0) > xToTarget) {
 
-                    robot.move("left or right idk", 1);
+                 //   robot.move("left or right idk", 1);
 
-                }
+                //}
 
 
 

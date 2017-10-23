@@ -67,7 +67,7 @@ public class TeleopOpmode extends LinearOpMode {
     final double TARGET_DISTANCE =  400.0;    // Hold robot's center 400 mm from target
 
     /* Declare OpMode members. */
-    VU_Robot_OmniDrive     robot    = new VU_Robot_OmniDrive();   // Use Omni-Directional drive system
+    VU_Robot_OmniDrive robot    = new VU_Robot_OmniDrive();   // Use Omni-Directional drive system
     VU_Robot_Navigation    nav      = new VU_Robot_Navigation();  // Use Image Tracking library
 
     @Override
