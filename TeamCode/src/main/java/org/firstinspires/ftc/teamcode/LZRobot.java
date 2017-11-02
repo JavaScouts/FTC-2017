@@ -49,7 +49,7 @@ public class LZRobot {
         backLDrive = map.dcMotor.get("BackMotor1");
         backRDrive = map.dcMotor.get("BackMotor2");
         //Coll = map.dcMotor.get("Collector");
-        //Arm = map.dcMotor.get("Arm");
+        Arm = map.dcMotor.get("Arm");
         //servo1 = map.servo.get("s1");
 
         //set directions
@@ -62,55 +62,55 @@ public class LZRobot {
         //stopRobot();
         moveRobot(0,0,0);
     }
-    /*
+    
     public void stopRobot() {
 
         //self explanatory
-        FrontMotor1.setPower(0);
-        FrontMotor2.setPower(0);
-        BackMotor1.setPower(0);
-        BackMotor2.setPower(0);
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
+        backLDrive.setPower(0);
+        backRDrive.setPower(0);
         //Coll.setPower(0);
-        //Arm.setPower(0);
+        Arm.setPower(0);
 
     }
 
     //function move takes a direction and a power
     //probably a better way to do this
-    void move(String dir, float power) {
+    public void move(String dir, float power) {
 
         //self explanatory
         switch (dir) {
             case "left":
 
-                BackMotor1.setPower(power);
-                FrontMotor1.setPower(-power);
-                BackMotor2.setPower(-power);
-                FrontMotor2.setPower(power);
+                backLDrive.setPower(power);
+                leftDrive.setPower(-power);
+                backRDrive.setPower(-power);
+                rightDrive.setPower(power);
 
                 break;
             case "right":
 
-                BackMotor1.setPower(-power);
-                FrontMotor1.setPower(power);
-                BackMotor2.setPower(power);
-                FrontMotor2.setPower(-power);
+                backLDrive.setPower(-power);
+                leftDrive.setPower(power);
+                backRDrive.setPower(power);
+                rightDrive.setPower(-power);
 
                 break;
             case "forwards":
 
-                BackMotor1.setPower(power);
-                FrontMotor1.setPower(power);
-                BackMotor2.setPower(power);
-                FrontMotor2.setPower(power);
+                backLDrive.setPower(power);
+                leftDrive.setPower(power);
+                backRDrive.setPower(power);
+                rightDrive.setPower(power);
 
                 break;
             case "backwards":
 
-                BackMotor1.setPower(-power);
-                FrontMotor1.setPower(-power);
-                BackMotor2.setPower(-power);
-                FrontMotor2.setPower(-power);
+                backLDrive.setPower(-power);
+                leftDrive.setPower(-power);
+                backRDrive.setPower(-power);
+                rightDrive.setPower(-power);
 
                 break;
         }
@@ -123,21 +123,22 @@ public class LZRobot {
         //self explanatory rotation for mecanum wheels
         if(dir.equals("cclock")) {
 
-            BackMotor1.setPower(-power);
-            FrontMotor1.setPower(-power);
-            BackMotor2.setPower(power);
-            FrontMotor2.setPower(power);
+            backLDrive.setPower(-power);
+            leftDrive.setPower(-power);
+            backRDrive.setPower(power);
+            rightDrive.setPower(power);
 
         } else if(dir.equals("clock")) {
 
-            BackMotor1.setPower(power);
-            FrontMotor1.setPower(power);
-            BackMotor2.setPower(-power);
-            FrontMotor2.setPower(-power);
+            backLDrive.setPower(power);
+            leftDrive.setPower(power);
+            backRDrive.setPower(-power);
+            rightDrive.setPower(-power);
 
         }
 
     }
+
     public void mecDrive(float leftY, float leftX, float rightX, double threshold) {
 
         if (abs(leftY) > threshold) {
@@ -156,10 +157,10 @@ public class LZRobot {
             X2 = 0;
         }
 
-        FrontMotor1.setPower(Y1 - X2 - X1);
-        BackMotor1.setPower(Y1 - X2 + X1);
-        FrontMotor2.setPower(Y1 + X2 + X1);
-        BackMotor2.setPower(Y1 + X2 - X1);
+        leftDrive.setPower(Y1 - X2 - X1);
+        backLDrive.setPower(Y1 - X2 + X1);
+        rightDrive.setPower(Y1 + X2 + X1);
+        backRDrive.setPower(Y1 + X2 - X1);
 
     }
 
@@ -167,10 +168,10 @@ public class LZRobot {
 
         if(dir == "left") {
 
-            BackMotor1.setPower(power);
-            FrontMotor1.setPower(-power);
-            BackMotor2.setPower(-power);
-            FrontMotor2.setPower(power);
+            backLDrive.setPower(power);
+            leftDrive.setPower(-power);
+            backRDrive.setPower(-power);
+            rightDrive.setPower(power);
             try {
                 TimeUnit.SECONDS.sleep(timeS);
             } catch (InterruptedException e) {
@@ -180,10 +181,10 @@ public class LZRobot {
 
         } else if(dir == "right") {
 
-            BackMotor1.setPower(-power);
-            FrontMotor1.setPower(power);
-            BackMotor2.setPower(power);
-            FrontMotor2.setPower(-power);
+            backLDrive.setPower(-power);
+            leftDrive.setPower(power);
+            backRDrive.setPower(power);
+            rightDrive.setPower(-power);
             try {
                 TimeUnit.SECONDS.sleep(timeS);
             } catch (InterruptedException e) {
@@ -193,10 +194,10 @@ public class LZRobot {
 
         } else if(dir == "forwards") {
 
-            BackMotor1.setPower(power);
-            FrontMotor1.setPower(power);
-            BackMotor2.setPower(power);
-            FrontMotor2.setPower(power);
+            backLDrive.setPower(power);
+            leftDrive.setPower(power);
+            backRDrive.setPower(power);
+            rightDrive.setPower(power);
             try {
                 TimeUnit.SECONDS.sleep(timeS);
             } catch (InterruptedException e) {
@@ -206,10 +207,10 @@ public class LZRobot {
 
         } else if(dir == "backwards") {
 
-            BackMotor1.setPower(-power);
-            FrontMotor1.setPower(-power);
-            BackMotor2.setPower(-power);
-            FrontMotor2.setPower(-power);
+            backLDrive.setPower(-power);
+            leftDrive.setPower(-power);
+            backRDrive.setPower(-power);
+            rightDrive.setPower(-power);
             try {
                 TimeUnit.SECONDS.sleep(timeS);
             } catch (InterruptedException e) {
@@ -220,7 +221,7 @@ public class LZRobot {
         }
 
     }
-    */
+    
     public void manualDrive()  {
         // In this mode the Left stick moves the robot fwd & back, and Right & Left.
         // The Right stick rotates CCW and CW.
@@ -230,11 +231,28 @@ public class LZRobot {
         setLateral(myOpMode.gamepad1.left_stick_x);
         setYaw(-myOpMode.gamepad1.right_stick_x);
     }
+    
+    public void newManualDrive() {
+
+        double r = Math.hypot(-myOpMode.gamepad1.left_stick_x, -myOpMode.gamepad1.left_stick_y);
+        double robotAngle = Math.atan2(-myOpMode.gamepad1.left_stick_y, -myOpMode.gamepad1.left_stick_x) - Math.PI / 4;
+        double rightX = -myOpMode.gamepad1.right_stick_x;
+        final double v1 = r * Math.cos(robotAngle) + rightX;
+        final double v2 = r * Math.sin(robotAngle) - rightX;
+        final double v3 = r * Math.sin(robotAngle) + rightX;
+        final double v4 = r * Math.cos(robotAngle) - rightX;
+
+        leftDrive.setPower(v1);
+        rightDrive.setPower(v2);
+        backLDrive.setPower(v3);
+        backRDrive.setPower(v4);
+        
+    }
 
     public void moveRobot(double axial, double lateral, double yaw) {
         setAxial(axial);
-        setLateral(lateral);
         setYaw(yaw);
+        setLateral(lateral);
         moveRobot();
     }
 
@@ -272,7 +290,12 @@ public class LZRobot {
     public void setLateral(double lateral)  {driveLateral = Range.clip(lateral, -1, 1); }
     public void setYaw(double yaw)          {driveYaw = Range.clip(yaw, -1, 1); }
 
+    public void setMode(DcMotor.RunMode mode ) {
+        leftDrive.setMode(mode);
+        rightDrive.setMode(mode);
+        backLDrive.setMode(mode);
+        backRDrive.setMode(mode);
 
-
+    }
 
 }

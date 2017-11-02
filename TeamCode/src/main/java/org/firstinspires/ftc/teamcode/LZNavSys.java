@@ -1,7 +1,8 @@
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.robotcontroller.external.samples.VU_Robot_OmniDrive;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
@@ -14,8 +15,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +32,7 @@ import java.util.List;
  *
  */
 
-public class VU_Robot_Navigation
+public class LZNavSys
 {
     // Constants
     private static final int     MAX_TARGETS    =   4;
@@ -51,7 +50,7 @@ public class VU_Robot_Navigation
 
     /* Private class members. */
     private LinearOpMode        myOpMode;       // Access to the OpMode object
-    private VU_Robot_OmniDrive myRobot;        // Access to the Robot hardware
+    private VU_Robot_OmniDrive  myRobot;        // Access to the Robot hardware
     private VuforiaTrackables   targets;        // List of active targets
 
     // Navigation data is only valid if targetFound == true;
@@ -66,7 +65,7 @@ public class VU_Robot_Navigation
                                                 //   eg: a Positive RelativeBearing means the robot must turn CCW to point at the target image.
 
     /* Constructor */
-    public VU_Robot_Navigation(){
+    public LZNavSys(){
 
         targetFound = false;
         targetName = null;
@@ -188,44 +187,19 @@ public class VU_Robot_Navigation
         // create an image translation/rotation matrix to be used for all images
         // Essentially put all the image centers 6" above the 0:0:0 origin,
         // but rotate them so they along the -X axis.
-
-        OpenGLMatrix[] targetLocations;
-
-        targetLocations = new OpenGLMatrix[4];
-
-        targetLocations[0] = OpenGLMatrix
-                .translation(6 * 12 * mmPerInch, -3 * 12 * mmPerInch, 6 * mmPerInch)
+        OpenGLMatrix targetOrientation = OpenGLMatrix
+                .translation(0, 0, 150)
                 .multiplied(Orientation.getRotationMatrix(
                         AxesReference.EXTRINSIC, AxesOrder.XYZ,
                         AngleUnit.DEGREES, 90, 0, -90));
 
-        targetLocations[1] = OpenGLMatrix
-                .translation(6 * 12 * mmPerInch, 3 * 12 * mmPerInch, 6 * mmPerInch)
-                .multiplied(Orientation.getRotationMatrix(
-                        AxesReference.EXTRINSIC, AxesOrder.XYZ,
-                        AngleUnit.DEGREES, 90, 0, -90));
-
-        targetLocations[2] = OpenGLMatrix
-                .translation(-6 * 12 * mmPerInch, -3 * 12 * mmPerInch, 6 * mmPerInch)
-                .multiplied(Orientation.getRotationMatrix(
-                        AxesReference.EXTRINSIC, AxesOrder.XYZ,
-                        AngleUnit.DEGREES, 90, 0, -90));
-
-        targetLocations[3] = OpenGLMatrix
-                .translation(-6 * 12 * mmPerInch, 3 * 12 * mmPerInch, 6 * mmPerInch)
-                .multiplied(Orientation.getRotationMatrix(
-                        AxesReference.EXTRINSIC, AxesOrder.XYZ,
-                        AngleUnit.DEGREES, 90, 0, -90));
-
-
-
-        /*
+        /**
          * Create a transformation matrix describing where the phone is on the robot.
          *
          * The coordinate frame for the robot looks the same as the field.
          * The robot's "forward" direction is facing out along X axis, with the LEFT side facing out along the Y axis.
-         * Z is UP on the robot.  This equates to a b         *
-earing angle of Zero degrees.
+         * Z is UP on the robot.  This equates to a bearing angle of Zero degrees.
+         *
          * The phone starts out lying flat, with the screen facing Up and with the physical top of the phone
          * pointing to the LEFT side of the Robot.  If we consider that the camera and screen will be
          * in "Landscape Mode" the upper portion of the screen is closest to the front of the robot.
@@ -253,18 +227,11 @@ earing angle of Zero degrees.
                     AngleUnit.DEGREES, CAMERA_CHOICE == VuforiaLocalizer.CameraDirection.FRONT ? 90 : -90, 0, 0));
 
         // Set the all the targets to have the same location and camera orientation
-
-        for(OpenGLMatrix tLoc : targetLocations) {
-
-            for (VuforiaTrackable trackable : allTrackables)    {
-
-                trackable.setLocation(tLoc);
-                ((VuforiaTrackableDefaultListener)trackable.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
-
-            }
-
+        for (VuforiaTrackable trackable : allTrackables)
+        {
+            trackable.setLocation(targetOrientation);
+            ((VuforiaTrackableDefaultListener)trackable.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
         }
-
     }
 
 

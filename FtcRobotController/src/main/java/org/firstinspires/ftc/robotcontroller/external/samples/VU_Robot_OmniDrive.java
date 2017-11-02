@@ -29,6 +29,11 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 
+
+    //YAW AND LATERAL ARE SWITCHED
+
+
+
 public class VU_Robot_OmniDrive
 {
     // Private Members
@@ -80,8 +85,8 @@ public class VU_Robot_OmniDrive
 
     //  (note: The joystick goes negative when pushed forwards, so negate it)
     setAxial(-myOpMode.gamepad1.left_stick_y);
-    setLateral(myOpMode.gamepad1.left_stick_x);
-    setYaw(-myOpMode.gamepad1.right_stick_x);
+    setYaw(myOpMode.gamepad1.left_stick_x);
+    setLateral(-myOpMode.gamepad1.right_stick_x);
 }
 
 
@@ -94,8 +99,8 @@ public class VU_Robot_OmniDrive
      */
     public void moveRobot(double axial, double lateral, double yaw) {
         setAxial(axial);
-        setLateral(lateral);
-        setYaw(yaw);
+        setYaw(lateral);
+        setLateral(yaw);
         moveRobot();
     }
 
