@@ -50,7 +50,7 @@ public class LZNavSys
 
     /* Private class members. */
     private LinearOpMode        myOpMode;       // Access to the OpMode object
-    private VU_Robot_OmniDrive  myRobot;        // Access to the Robot hardware
+    private LZRobot  myRobot;        // Access to the Robot hardware
     private VuforiaTrackables   targets;        // List of active targets
 
     // Navigation data is only valid if targetFound == true;
@@ -149,7 +149,7 @@ public class LZNavSys
      * @param opMode    pointer to OpMode
      * @param robot     pointer to Robot hardware class
      */
-    public void initVuforia(LinearOpMode opMode, VU_Robot_OmniDrive robot) {
+    public void initVuforia(LinearOpMode opMode, LZRobot robot) {
 
         // Save reference to OpMode and Hardware map
         myOpMode = opMode;
@@ -187,19 +187,43 @@ public class LZNavSys
         // create an image translation/rotation matrix to be used for all images
         // Essentially put all the image centers 6" above the 0:0:0 origin,
         // but rotate them so they along the -X axis.
-        OpenGLMatrix targetOrientation = OpenGLMatrix
-                .translation(0, 0, 150)
+        OpenGLMatrix[] targetLocations;
+
+        targetLocations = new OpenGLMatrix[4];
+
+        targetLocations[0] = OpenGLMatrix
+                .translation(6 * 12 * mmPerInch, -3 * 12 * mmPerInch, 6 * mmPerInch)
                 .multiplied(Orientation.getRotationMatrix(
                         AxesReference.EXTRINSIC, AxesOrder.XYZ,
                         AngleUnit.DEGREES, 90, 0, -90));
 
-        /**
+        targetLocations[1] = OpenGLMatrix
+                .translation(6 * 12 * mmPerInch, 3 * 12 * mmPerInch, 6 * mmPerInch)
+                .multiplied(Orientation.getRotationMatrix(
+                        AxesReference.EXTRINSIC, AxesOrder.XYZ,
+                        AngleUnit.DEGREES, 90, 0, -90));
+
+        targetLocations[2] = OpenGLMatrix
+                .translation(-6 * 12 * mmPerInch, -3 * 12 * mmPerInch, 6 * mmPerInch)
+                .multiplied(Orientation.getRotationMatrix(
+                        AxesReference.EXTRINSIC, AxesOrder.XYZ,
+                        AngleUnit.DEGREES, 90, 0, -90));
+
+        targetLocations[3] = OpenGLMatrix
+                .translation(-6 * 12 * mmPerInch, 3 * 12 * mmPerInch, 6 * mmPerInch)
+                .multiplied(Orientation.getRotationMatrix(
+                        AxesReference.EXTRINSIC, AxesOrder.XYZ,
+                        AngleUnit.DEGREES, 90, 0, -90));
+
+
+
+        /*
          * Create a transformation matrix describing where the phone is on the robot.
          *
          * The coordinate frame for the robot looks the same as the field.
          * The robot's "forward" direction is facing out along X axis, with the LEFT side facing out along the Y axis.
-         * Z is UP on the robot.  This equates to a bearing angle of Zero degrees.
-         *
+         * Z is UP on the robot.  This equates to a b         *
+earing angle of Zero degrees.
          * The phone starts out lying flat, with the screen facing Up and with the physical top of the phone
          * pointing to the LEFT side of the Robot.  If we consider that the camera and screen will be
          * in "Landscape Mode" the upper portion of the screen is closest to the front of the robot.
@@ -221,16 +245,22 @@ public class LZNavSys
         final int CAMERA_LEFT_DISPLACEMENT     = 0;     // Camera is ON the robots center line
 
         OpenGLMatrix phoneLocationOnRobot = OpenGLMatrix
-            .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
-            .multiplied(Orientation.getRotationMatrix(
-                    AxesReference.EXTRINSIC, AxesOrder.YZX,
-                    AngleUnit.DEGREES, CAMERA_CHOICE == VuforiaLocalizer.CameraDirection.FRONT ? 90 : -90, 0, 0));
+                .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
+                .multiplied(Orientation.getRotationMatrix(
+                        AxesReference.EXTRINSIC, AxesOrder.YZX,
+                        AngleUnit.DEGREES, CAMERA_CHOICE == VuforiaLocalizer.CameraDirection.FRONT ? 90 : -90, 0, 0));
 
         // Set the all the targets to have the same location and camera orientation
-        for (VuforiaTrackable trackable : allTrackables)
-        {
-            trackable.setLocation(targetOrientation);
-            ((VuforiaTrackableDefaultListener)trackable.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
+
+        for(OpenGLMatrix tLoc : targetLocations) {
+
+            for (VuforiaTrackable trackable : allTrackables)    {
+
+                trackable.setLocation(tLoc);
+                ((VuforiaTrackableDefaultListener)trackable.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
+
+            }
+
         }
     }
 
