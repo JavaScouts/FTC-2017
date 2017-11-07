@@ -44,10 +44,10 @@ public class LZRobot {
         myOpMode = opMode;
 
         //get motors from map
-        leftDrive = map.dcMotor.get("FrontMotor1");
-        rightDrive = map.dcMotor.get("FrontMotor2");
-        backLDrive = map.dcMotor.get("BackMotor1");
-        backRDrive = map.dcMotor.get("BackMotor2");
+        leftDrive = map.dcMotor.get("fl");
+        rightDrive = map.dcMotor.get("fr");
+        backLDrive = map.dcMotor.get("bl");
+        backRDrive = map.dcMotor.get("br");
         //Coll = map.dcMotor.get("Collector");
         Arm = map.dcMotor.get("Arm");
         //servo1 = map.servo.get("s1");

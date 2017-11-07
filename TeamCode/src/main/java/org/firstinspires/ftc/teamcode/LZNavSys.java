@@ -187,35 +187,33 @@ public class LZNavSys
         // create an image translation/rotation matrix to be used for all images
         // Essentially put all the image centers 6" above the 0:0:0 origin,
         // but rotate them so they along the -X axis.
-        OpenGLMatrix[] targetLocations;
+        OpenGLMatrix[] targetLocations = {
 
-        targetLocations = new OpenGLMatrix[4];
-
-        targetLocations[0] = OpenGLMatrix
+                OpenGLMatrix
                 .translation(6 * 12 * mmPerInch, -3 * 12 * mmPerInch, 6 * mmPerInch)
                 .multiplied(Orientation.getRotationMatrix(
                         AxesReference.EXTRINSIC, AxesOrder.XYZ,
-                        AngleUnit.DEGREES, 90, 0, -90));
+                        AngleUnit.DEGREES, 90, 0, -90)),
 
-        targetLocations[1] = OpenGLMatrix
+                OpenGLMatrix
                 .translation(6 * 12 * mmPerInch, 3 * 12 * mmPerInch, 6 * mmPerInch)
                 .multiplied(Orientation.getRotationMatrix(
                         AxesReference.EXTRINSIC, AxesOrder.XYZ,
-                        AngleUnit.DEGREES, 90, 0, -90));
+                        AngleUnit.DEGREES, 90, 0, -90)),
 
-        targetLocations[2] = OpenGLMatrix
+                OpenGLMatrix
                 .translation(-6 * 12 * mmPerInch, -3 * 12 * mmPerInch, 6 * mmPerInch)
                 .multiplied(Orientation.getRotationMatrix(
                         AxesReference.EXTRINSIC, AxesOrder.XYZ,
-                        AngleUnit.DEGREES, 90, 0, -90));
+                        AngleUnit.DEGREES, 90, 0, -90)),
 
-        targetLocations[3] = OpenGLMatrix
+                OpenGLMatrix
                 .translation(-6 * 12 * mmPerInch, 3 * 12 * mmPerInch, 6 * mmPerInch)
                 .multiplied(Orientation.getRotationMatrix(
                         AxesReference.EXTRINSIC, AxesOrder.XYZ,
-                        AngleUnit.DEGREES, 90, 0, -90));
+                        AngleUnit.DEGREES, 90, 0, -90)),
 
-
+        };
 
         /*
          * Create a transformation matrix describing where the phone is on the robot.

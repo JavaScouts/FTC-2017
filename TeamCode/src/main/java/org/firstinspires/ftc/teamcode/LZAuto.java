@@ -12,8 +12,6 @@ public class LZAuto extends LinearOpMode {
     LZRobot robot = new LZRobot();
     LZNavSys nav = new LZNavSys();
 
-
-
     public void runOpMode() {
 
 

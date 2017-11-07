@@ -50,10 +50,10 @@ public class FinalProgram extends OpMode {
         }
         //Goes Right
         while (gamepad1.x) {
-            BackMotor1.setPower(-100);
-            FrontMotor1.setPower(100);
-            BackMotor2.setPower(100);
-            FrontMotor2.setPower(-100);
+                BackMotor1.setPower(-100);
+                FrontMotor1.setPower(100);
+                BackMotor2.setPower(100);
+                FrontMotor2.setPower(-100);
 
         }
 
