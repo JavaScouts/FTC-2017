@@ -11,7 +11,7 @@ import static java.lang.Math.abs;
 public class NEWDRIVESYSTEM extends LinearOpMode {
 
     LZRobot robot = new LZRobot();
-    //LZNavSys nav = new LZNavSys();
+    LZNavSys nav = new LZNavSys();
     DcMotor Arm;
     Servo s1;
     final double TARGET_DISTANCE = 400.0;
@@ -20,7 +20,7 @@ public class NEWDRIVESYSTEM extends LinearOpMode {
     public void runOpMode() {
 
         robot.init(hardwareMap, this);
-        //nav.initVuforia(this, robot);
+        nav.initVuforia(this, robot);
         Arm = hardwareMap.dcMotor.get("Arm");
         s1 = hardwareMap.servo.get("s1");
 
@@ -42,16 +42,7 @@ public class NEWDRIVESYSTEM extends LinearOpMode {
                 s1.setPosition(0.2);
             }
 
-            while (gamepad1.x) {
-                robot.move("left", STRAFE_POWER);
-            }
-            while(gamepad1.b) {
-                robot.move("right", STRAFE_POWER);
-            }
-
-
-
-            /*if (nav.targetsAreVisible() && gamepad1.left_bumper) {
+            if (nav.targetsAreVisible() && gamepad1.left_bumper) {
                 // Calculate automatic target approach
                 nav.cruiseControl(TARGET_DISTANCE);
 
@@ -60,12 +51,8 @@ public class NEWDRIVESYSTEM extends LinearOpMode {
                 robot.manualDrive();
             }
 
-            */
             // Build telemetry messages with Navigation Information;
-            //nav.addNavTelemetry();
-
-
-
+            nav.addNavTelemetry();
 
             robot.manualDrive();
 

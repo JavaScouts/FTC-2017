@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
@@ -53,10 +54,7 @@ public class LZRobot {
         //servo1 = map.servo.get("s1");
 
         //set directions
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);
-        backLDrive.setDirection(DcMotor.Direction.REVERSE);
-        backRDrive.setDirection(DcMotor.Direction.FORWARD);
+        backRDrive.setDirection(DcMotor.Direction.REVERSE);
 
         //stop
         //stopRobot();

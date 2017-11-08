@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.vuforia.Vuforia;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.VU_Robot_OmniDrive;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -41,6 +43,8 @@ public class LZNavSys
     float mmPerInch        = 25.4f;
     float mmBotWidth       = 18 * mmPerInch;            // ... or whatever is right for your robot
     float mmFTCFieldWidth  = (12*12 - 2) * mmPerInch;
+    public VuforiaLocalizer vuforia;
+    public VuforiaTrackable relicTrackables;
     // Select which camera you want use.  The FRONT camera is the one on the same side as the screen.  Alt. is BACK
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = VuforiaLocalizer.CameraDirection.FRONT;
 
@@ -101,14 +105,12 @@ public class LZNavSys
         }
     }
 
-    /***
-     * Start tracking Vuforia images
-     */
     public void activateTracking() {
 
         // Start tracking any of the defined targets
         if (targets != null)
             targets.activate();
+
     }
 
 
@@ -178,7 +180,6 @@ public class LZNavSys
          * They represent the four image targets used in the 2016-17 FTC game.
          */
         targets = vuforia.loadTrackablesFromAsset("RelicVuMark");
-        targets.get(0).setName("VuMark");
 
         /** For convenience, gather together all the trackable objects in one easily-iterable collection */
         List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
@@ -187,7 +188,7 @@ public class LZNavSys
         // create an image translation/rotation matrix to be used for all images
         // Essentially put all the image centers 6" above the 0:0:0 origin,
         // but rotate them so they along the -X axis.
-        OpenGLMatrix[] targetLocations = {
+        /*OpenGLMatrix[] targetLocations = {
 
                 OpenGLMatrix
                 .translation(6 * 12 * mmPerInch, -3 * 12 * mmPerInch, 6 * mmPerInch)
@@ -237,7 +238,7 @@ earing angle of Zero degrees.
          * Next, translate the camera lens to where it is on the robot.
          * In this example, it is centered (left to right), but 110 mm forward of the middle of the robot, and 200 mm above ground level.
          */
-
+        /*
         final int CAMERA_FORWARD_DISPLACEMENT  = 110;   // Camera is 110 mm in front of robot center
         final int CAMERA_VERTICAL_DISPLACEMENT = 200;   // Camera is 200 mm above ground
         final int CAMERA_LEFT_DISPLACEMENT     = 0;     // Camera is ON the robots center line
@@ -260,6 +261,9 @@ earing angle of Zero degrees.
             }
 
         }
+        */
+
+
     }
 
 

@@ -2,7 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;;
 
 /**
  * Created by Liam on 11/5/2017.
@@ -24,6 +25,8 @@ public class LZData extends LinearOpMode {
         BackMotor1 = hardwareMap.dcMotor.get("bl");
         BackMotor2 = hardwareMap.dcMotor.get("br");
 
+        BackMotor2.setDirection(DcMotorSimple.Direction.REVERSE);
+
         FrontMotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         FrontMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BackMotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -38,17 +41,17 @@ public class LZData extends LinearOpMode {
 
         while(opModeIsActive()) {
 
-            float lF = gamepad1.left_stick_y;
-            float rF = gamepad1.right_stick_y;
-            float lB = gamepad2.left_stick_y;
-            float rB = gamepad2.right_stick_y;
+            float lF = -gamepad1.left_stick_y;
+            float rF = -gamepad1.right_stick_y;
+            float lB = -gamepad2.left_stick_y;
+            float rB = -gamepad2.right_stick_y;
 
             FrontMotor1.setPower(lF);
             FrontMotor2.setPower(rF);
             BackMotor1.setPower(lB);
             BackMotor2.setPower(rB);
 
-            telemetry.addData("Gamepad Powers", "LF[%+5.2f]", "RF[%+5.2f]", "LB[%+5.2f]", "RB[%+5.2f]", lF, rF, lB, rB);
+            telemetry.addData("Gamepad Powers", "LF[%+5.2f], RF[%+5.2f], LB[%+5.2f], RB[%+5.2f]", lF, rF, lB, rB);
             telemetry.update();
 
         }
