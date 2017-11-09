@@ -38,7 +38,6 @@ public class LZRobot {
 
     }
 
-
     public void init(HardwareMap map1, LinearOpMode opMode) {
 
         map = map1;
@@ -288,7 +287,12 @@ public class LZRobot {
     public void setLateral(double lateral)  {driveLateral = Range.clip(lateral, -1, 1); }
     public void setYaw(double yaw)          {driveYaw = Range.clip(yaw, -1, 1); }
 
+    public void setAxialtoLateral(double axial)          {driveLateral = -Range.clip(axial, -1, 1);}
+    public void setLateraltoAxial(double lateral)        {driveAxial = Range.clip(lateral, -1, 1);}
+    public void setChangeYaw(double yaw)                 {driveYaw = Range.clip(yaw, -1, 1);}
+
     public void setMode(DcMotor.RunMode mode ) {
+
         leftDrive.setMode(mode);
         rightDrive.setMode(mode);
         backLDrive.setMode(mode);

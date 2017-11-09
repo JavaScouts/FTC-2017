@@ -122,6 +122,7 @@ public class LZNavSys
      * @param standOffDistance how close do we get the center of the robot to target (in mm)
      */
     public boolean cruiseControl(double standOffDistance) {
+
         boolean closeEnough;
 
         // Priority #1 Rotate to always be pointing at the target (for best target retention).
@@ -134,9 +135,9 @@ public class LZNavSys
         double A  = (-(robotX + standOffDistance) * AXIAL_GAIN);
 
         // Send the desired axis motions to the robot hardware.
-        myRobot.setYaw(Y);
-        myRobot.setAxial(A);
-        myRobot.setLateral(L);
+        myRobot.setChangeYaw(Y);
+        myRobot.setAxialtoLateral(A);
+        myRobot.setLateraltoAxial(L);
 
         // Determine if we are close enough to the target for action.
         closeEnough = ( (Math.abs(robotX + standOffDistance) < CLOSE_ENOUGH) &&
@@ -180,10 +181,6 @@ public class LZNavSys
          * They represent the four image targets used in the 2016-17 FTC game.
          */
         targets = vuforia.loadTrackablesFromAsset("RelicVuMark");
-
-        /** For convenience, gather together all the trackable objects in one easily-iterable collection */
-        List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
-        allTrackables.addAll(targets);
 
         // create an image translation/rotation matrix to be used for all images
         // Essentially put all the image centers 6" above the 0:0:0 origin,
