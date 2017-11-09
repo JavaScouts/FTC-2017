@@ -12,21 +12,20 @@ public class NEWDRIVESYSTEM extends LinearOpMode {
 
     LZRobot robot = new LZRobot();
     LZNavSys nav = new LZNavSys();
-    DcMotor Arm;
+    DcMotor slide;
     Servo s1;
     final double TARGET_DISTANCE = 400.0;
-    final float STRAFE_POWER = (float) 0.8;
 
     public void runOpMode() {
 
         robot.init(hardwareMap, this);
         nav.initVuforia(this, robot);
-        Arm = hardwareMap.dcMotor.get("Arm");
+        slide = hardwareMap.dcMotor.get("Arm");
         s1 = hardwareMap.servo.get("s1");
 
         telemetry.addData("Initialization", "Completed");
         telemetry.update();
-        s1.setPosition(0);
+        s1.setPosition(0.2);
 
         waitForStart();
 
@@ -34,7 +33,7 @@ public class NEWDRIVESYSTEM extends LinearOpMode {
 
             float left90 = -gamepad2.left_stick_y;
 
-            Arm.setPower(left90);
+            slide.setPower(left90);
 
             if (gamepad2.a) {
                 s1.setPosition(1.0);
