@@ -289,12 +289,12 @@ earing angle of Zero degrees.
 
         int targetTestID = 0;
 
-        // Check each target in turn, but stop looking when the first target is found.
-        while ((targetTestID < MAX_TARGETS) && !targetIsVisible(targetTestID)) {
-            targetTestID++ ;
+        while(!targetIsVisible(targetTestID)) {
+
         }
 
-        return (targetFound);
+        return targetFound;
+
     }
 
     /***
@@ -306,7 +306,7 @@ earing angle of Zero degrees.
      */
     public boolean targetIsVisible(int targetId) {
 
-        VuforiaTrackable target = targets.get(0);
+        VuforiaTrackable target = targets.get(targetId);
         VuforiaTrackableDefaultListener listener = (VuforiaTrackableDefaultListener)target.getListener();
         OpenGLMatrix location  = null;
 
