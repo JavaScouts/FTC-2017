@@ -12,6 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
@@ -44,7 +45,7 @@ public class LZNavSys
     float mmBotWidth       = 18 * mmPerInch;            // ... or whatever is right for your robot
     float mmFTCFieldWidth  = (12*12 - 2) * mmPerInch;
     public VuforiaLocalizer vuforia;
-    public VuforiaTrackable relicTrackables;
+
     // Select which camera you want use.  The FRONT camera is the one on the same side as the screen.  Alt. is BACK
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = VuforiaLocalizer.CameraDirection.FRONT;
 
@@ -54,8 +55,9 @@ public class LZNavSys
 
     /* Private class members. */
     private LinearOpMode        myOpMode;       // Access to the OpMode object
-    private LZRobot  myRobot;        // Access to the Robot hardware
+    private LZRobot             myRobot;        // Access to the Robot hardware
     private VuforiaTrackables   targets;        // List of active targets
+    private VuforiaTrackable    relicBase;
 
     // Navigation data is only valid if targetFound == true;
     private boolean             targetFound;    // set to true if Vuforia is currently tracking a target
@@ -90,7 +92,7 @@ public class LZNavSys
         if (targetFound)
         {
             // Display the current visible target name, robot info, target info, and required robot action.
-            myOpMode.telemetry.addData("Visible", targetName);
+            myOpMode.telemetry.addData("Visible", whatRelic());
             myOpMode.telemetry.addData("Robot", "[X]:[Y] (B) [%5.0fmm]:[%5.0fmm] (%4.0f°)",
                     robotX, robotY, robotBearing);
             myOpMode.telemetry.addData("Target", "[R] (B):(RB) [%5.0fmm] (%4.0f°):(%4.0f°)",
@@ -172,15 +174,16 @@ public class LZNavSys
         parameters.vuforiaLicenseKey = "Abd1Glv/////AAAAGZmYidRnmEU+hDYHKdO9PSlKOkMzut3jACYyynIBk/aI/uy1g5waDFv0hQlDLLoROL/RcHOLRIXYoEeTj0xW6JPELJd94fYr72YQ8A/hFOPLDO1UuM1je+Y2KbABDDilKaqShhHzfPinH1M7NLA7aZCwUk4ZRiDsLcB9f4hKVa9g//sUxId3KFb4GW438tD8t/xdZfcLcm+vP4yREaW6NirbqzCwTvp22/2eDuKIHGvVn3Fju4PcqCYYaFTvubLX2iXOwrEJWEVD+qtvQsqr5Dk+ClaUlv9amad/14aEU5jUohRU04PUlEgtaGSfLGNBmOXW14ugnipSbC1Lr423HlaaGgNjseX+D3nbZlX9a2Zo";
 
         parameters.cameraDirection = CAMERA_CHOICE;
-        parameters.useExtendedTracking = false;
-        VuforiaLocalizer vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
 
         /**
          * Load the data sets that for the trackable objects we wish to track.
          * These particular data sets are stored in the 'assets' part of our application
          * They represent the four image targets used in the 2016-17 FTC game.
          */
-        targets = vuforia.loadTrackablesFromAsset("RelicVuMark");
+
+        targets = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+        relicBase = targets.get(0);
 
         // create an image translation/rotation matrix to be used for all images
         // Essentially put all the image centers 6" above the 0:0:0 origin,
@@ -261,6 +264,19 @@ earing angle of Zero degrees.
         */
 
 
+
+
+    }
+
+
+    public String whatRelic() {
+
+        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicBase);
+
+        String vuMarkString = vuMark.toString();
+
+        return vuMarkString;
+
     }
 
 
@@ -290,7 +306,7 @@ earing angle of Zero degrees.
      */
     public boolean targetIsVisible(int targetId) {
 
-        VuforiaTrackable target = targets.get(targetId);
+        VuforiaTrackable target = targets.get(0);
         VuforiaTrackableDefaultListener listener = (VuforiaTrackableDefaultListener)target.getListener();
         OpenGLMatrix location  = null;
 

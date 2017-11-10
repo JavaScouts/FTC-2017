@@ -109,7 +109,7 @@ public class TestVuMarkID extends LinearOpMode {
          * Here we chose the back (HiRes) camera (for greater range), but
          * for a competition robot, the front camera might be more convenient.
          */
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
 
         /**
@@ -124,6 +124,7 @@ public class TestVuMarkID extends LinearOpMode {
 
         telemetry.addData(">", "Press Play to start");
         telemetry.update();
+
         waitForStart();
 
         relicTrackables.activate();
@@ -138,6 +139,7 @@ public class TestVuMarkID extends LinearOpMode {
              */
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+
 
                 /* Found an instance of the template. In the actual game, you will probably
                  * loop until this condition occurs, then move on to act accordingly depending

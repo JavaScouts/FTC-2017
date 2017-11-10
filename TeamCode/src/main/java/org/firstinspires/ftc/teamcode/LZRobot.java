@@ -21,8 +21,8 @@ public class LZRobot {
     public DcMotor rightDrive;
     public DcMotor backLDrive;
     public DcMotor backRDrive;
-    public DcMotor Coll;
-    public DcMotor Arm;
+    public Servo s1;
+    public DcMotor slide;
     public float Y1;
     public float X1;
     public float X2;
@@ -48,27 +48,16 @@ public class LZRobot {
         rightDrive = map.dcMotor.get("fr");
         backLDrive = map.dcMotor.get("bl");
         backRDrive = map.dcMotor.get("br");
-        //Coll = map.dcMotor.get("Collector");
-        Arm = map.dcMotor.get("Arm");
-        //servo1 = map.servo.get("s1");
+        slide = map.dcMotor.get("Arm");
+        s1 = map.servo.get("s1");
 
         //set directions
         backRDrive.setDirection(DcMotor.Direction.REVERSE);
 
-        //stop
-        //stopRobot();
-        moveRobot(0,0,0);
-    }
-    
-    public void stopRobot() {
+        setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        //self explanatory
-        leftDrive.setPower(0);
-        rightDrive.setPower(0);
-        backLDrive.setPower(0);
-        backRDrive.setPower(0);
-        //Coll.setPower(0);
-        Arm.setPower(0);
+        moveRobot(0,0,0);
+        s1.setPosition(0.2);
 
     }
 
@@ -174,7 +163,8 @@ public class LZRobot {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            stopRobot();
+
+            moveRobot(0,0,0);
 
         } else if(dir == "right") {
 
@@ -187,7 +177,7 @@ public class LZRobot {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            stopRobot();
+            moveRobot(0,0,0);
 
         } else if(dir == "forwards") {
 
@@ -200,7 +190,7 @@ public class LZRobot {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            stopRobot();
+            moveRobot(0,0,0);
 
         } else if(dir == "backwards") {
 
@@ -213,7 +203,7 @@ public class LZRobot {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            stopRobot();
+            moveRobot(0,0,0);
 
         }
 
@@ -227,6 +217,19 @@ public class LZRobot {
         setAxial(-myOpMode.gamepad1.left_stick_y);
         setLateral(myOpMode.gamepad1.left_stick_x);
         setYaw(-myOpMode.gamepad1.right_stick_x);
+
+        slide.setPower(-myOpMode.gamepad2.left_stick_y);
+
+        if (myOpMode.gamepad2.a) {
+
+            s1.setPosition(1.0);
+
+        } else if (myOpMode.gamepad2.b) {
+
+            s1.setPosition(0.2);
+
+        }
+
     }
     
     public void newManualDrive() {
@@ -247,10 +250,12 @@ public class LZRobot {
     }
 
     public void moveRobot(double axial, double lateral, double yaw) {
+
         setAxial(axial);
         setYaw(yaw);
         setLateral(lateral);
         moveRobot();
+
     }
 
     public void moveRobot() {
@@ -281,14 +286,15 @@ public class LZRobot {
         // Display Telemetry
         myOpMode.telemetry.addData("Axes  ", "A[%+5.2f], L[%+5.2f], Y[%+5.2f]", driveAxial, driveLateral, driveYaw);
         myOpMode.telemetry.addData("Wheels", "L[%+5.2f], R[%+5.2f], BL[%+5.2f], BR[%+5.2f]", left, right, backL, backR);
+
     }
 
     public void setAxial(double axial)      {driveAxial = Range.clip(axial, -1, 1);}
     public void setLateral(double lateral)  {driveLateral = Range.clip(lateral, -1, 1); }
     public void setYaw(double yaw)          {driveYaw = Range.clip(yaw, -1, 1); }
 
-    public void setAxialtoLateral(double axial)          {driveLateral = -Range.clip(axial, -1, 1);}
-    public void setLateraltoAxial(double lateral)        {driveAxial = Range.clip(lateral, -1, 1);}
+    public void setAxialtoLateral(double axial)          {driveLateral = Range.clip(axial, -1, 1);}
+    public void setLateraltoAxial(double lateral)        {driveAxial = -Range.clip(lateral, -1, 1);}
     public void setChangeYaw(double yaw)                 {driveYaw = Range.clip(yaw, -1, 1);}
 
     public void setMode(DcMotor.RunMode mode ) {
@@ -297,6 +303,7 @@ public class LZRobot {
         rightDrive.setMode(mode);
         backLDrive.setMode(mode);
         backRDrive.setMode(mode);
+        slide.setMode(mode);
 
     }
 
