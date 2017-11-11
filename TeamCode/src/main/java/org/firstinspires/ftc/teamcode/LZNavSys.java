@@ -289,9 +289,7 @@ earing angle of Zero degrees.
 
         int targetTestID = 0;
 
-        while(!targetIsVisible(targetTestID)) {
-
-        }
+        targetIsVisible(targetTestID);
 
         return targetFound;
 
