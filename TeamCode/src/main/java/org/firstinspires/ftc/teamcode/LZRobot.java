@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cColorSensor;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -23,6 +26,9 @@ public class LZRobot {
     public DcMotor backRDrive;
     public Servo s1;
     public DcMotor slide;
+    public ModernRoboticsI2cRangeSensor range1;
+    public ModernRoboticsI2cRangeSensor range2;
+    public ColorSensor color;
     public float Y1;
     public float X1;
     public float X2;
@@ -50,6 +56,9 @@ public class LZRobot {
         backRDrive = map.dcMotor.get("br");
         slide = map.dcMotor.get("Arm");
         s1 = map.servo.get("s1");
+        color = map.colorSensor.get("Color");
+        range1 = map.get(ModernRoboticsI2cRangeSensor.class, "range1");
+        range2 = map.get(ModernRoboticsI2cRangeSensor.class, "range2");
 
         //set directions
         backRDrive.setDirection(DcMotor.Direction.REVERSE);
