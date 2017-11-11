@@ -53,11 +53,10 @@ public class LZRobot {
 
         //set directions
         backRDrive.setDirection(DcMotor.Direction.REVERSE);
-
-        setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        s1.setDirection(Servo.Direction.REVERSE);
 
         moveRobot(0,0,0);
-        s1.setPosition(0.2);
+        s1.setPosition(0.4);
 
     }
 
@@ -216,19 +215,7 @@ public class LZRobot {
         //  (note: The joystick goes negative when pushed forwards, so negate it)
         setAxial(-myOpMode.gamepad1.left_stick_y);
         setLateral(myOpMode.gamepad1.left_stick_x);
-        setYaw(-myOpMode.gamepad1.right_stick_x);
-
-        slide.setPower(-myOpMode.gamepad2.left_stick_y);
-
-        if (myOpMode.gamepad2.a) {
-
-            s1.setPosition(1.0);
-
-        } else if (myOpMode.gamepad2.b) {
-
-            s1.setPosition(0.2);
-
-        }
+        setYaw(myOpMode.gamepad1.right_stick_x);
 
     }
     

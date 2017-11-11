@@ -11,49 +11,55 @@ import static java.lang.Math.abs;
 public class NEWDRIVESYSTEM extends LinearOpMode {
 
     LZRobot robot = new LZRobot();
-    LZNavSys nav = new LZNavSys();
+    //LZNavSys nav = new LZNavSys();
 
     final double TARGET_DISTANCE = 400.0;
 
     public void runOpMode() {
 
         robot.init(hardwareMap, this);
-        nav.initVuforia(this, robot);
+        //nav.initVuforia(this, robot);
 
         telemetry.addData("Initialization", "Completed");
         telemetry.update();
-        robot.s1.setPosition(0.2);
 
         waitForStart();
 
-        nav.activateTracking();
+    //    nav.activateTracking();
 
         while (opModeIsActive()) {
 
-            try {
+            robot.slide.setPower(-gamepad2.left_stick_y);
 
-                if (nav.targetsAreVisible() && gamepad1.left_bumper) {
-                    // Calculate automatic target approach
-                    nav.cruiseControl(TARGET_DISTANCE);
+           // robot.s1.setPosition(abs(gamepad2.right_stick_x));
 
-                } else {
-                    // Drive the robot using the joysticks
-                    robot.manualDrive();
-                }
+            if (gamepad2.a) {
 
-                // Build telemetry messages with Navigation Information;
-                nav.addNavTelemetry();
+                robot.s1.setPosition(1.0);
 
-                robot.moveRobot();
+            } else if (gamepad2.b) {
 
-                telemetry.update();
-
-            } catch(IndexOutOfBoundsException e) {
-
-                e.printStackTrace();
+                robot.s1.setPosition(0.3);
 
             }
 
+      //      if (nav.targetsAreVisible() && gamepad1.left_bumper) {
+                // Calculate automatic target approach
+        //        nav.cruiseControl(TARGET_DISTANCE);
+
+          //  } else {
+                // Drive the robot using the joysticks
+            //    robot.manualDrive();
+
+            //}
+            // Build telemetry messages with Navigation Information;
+            //nav.addNavTelemetry();
+
+            robot.moveRobot();
+
+            telemetry.update();
+
         }
     }
+
 }
