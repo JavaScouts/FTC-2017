@@ -25,6 +25,7 @@ public class LZRobot {
     public DcMotor backLDrive;
     public DcMotor backRDrive;
     public Servo s1;
+    public Servo s2;
     public DcMotor slide;
     public ModernRoboticsI2cRangeSensor range1;
     public ModernRoboticsI2cRangeSensor range2;
@@ -56,6 +57,7 @@ public class LZRobot {
         backRDrive = map.dcMotor.get("br");
         slide = map.dcMotor.get("Arm");
         s1 = map.servo.get("s1");
+        s2 = map.servo.get("s2");
         color = map.colorSensor.get("Color");
         range1 = map.get(ModernRoboticsI2cRangeSensor.class, "range1");
         range2 = map.get(ModernRoboticsI2cRangeSensor.class, "range2");
@@ -66,6 +68,7 @@ public class LZRobot {
 
         moveRobot(0,0,0);
         s1.setPosition(0.4);
+        s2.setPosition(0);
 
     }
 

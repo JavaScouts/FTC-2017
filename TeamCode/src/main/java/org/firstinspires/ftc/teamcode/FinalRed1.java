@@ -65,9 +65,9 @@ import org.firstinspires.ftc.teamcode.LZRobot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="FinalBlue1")
+@Autonomous(name="FinalRed1")
 
-public class FinalBlue1 extends LinearOpMode {
+public class FinalRed1 extends LinearOpMode {
 
     /* Declare OpMode members. */
     LZRobot robot = new LZRobot();  // Use a Pushbot's hardware
@@ -138,7 +138,7 @@ public class FinalBlue1 extends LinearOpMode {
         robot.s1.setPosition(1.0);
         robot.s2.setPosition(1.0);
         encoderDrive(DRIVE_SPEED, 0, 0, 0, 0, 7, 5);
-        if(robot.color.blue() > 0){
+        if(robot.color.red() > 0){
             encoderDrive(DRIVE_SPEED, -5, -5, -5,-5, 0, 5);
             robot.s2.setPosition(0);
             encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 0, 5);
@@ -148,18 +148,17 @@ public class FinalBlue1 extends LinearOpMode {
             encoderDrive(DRIVE_SPEED, -5, -5, -5,-5, 0, 5);
         }
         if (nav.whatRelic() == "LEFT"){
-            encoderDrive(DRIVE_SPEED, 10, 10, 10, 10, 0, 5);
-            encoderDrive(DRIVE_SPEED, 0, 0, 15, 15, 0, 5);
-            encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 0, 5);
-        } else if (nav.whatRelic() == "CENTER"){
+            encoderDrive(DRIVE_SPEED, -10, -10, -10, -10, 0, 5);
+            encoderDrive(DRIVE_SPEED, -15, -15, 0, 0, 0, 5);
             encoderDrive(DRIVE_SPEED, 15, 15, 15, 15, 0, 5);
-            encoderDrive(DRIVE_SPEED, 0, 0, 15, 15, 0, 5);
-            encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 0, 5);
-
+        } else if (nav.whatRelic() == "CENTER"){
+            encoderDrive(DRIVE_SPEED, -15, -15, -15, -15, 0, 5);
+            encoderDrive(DRIVE_SPEED, -15, -15, 0, 0, 0, 5);
+            encoderDrive(DRIVE_SPEED, 15, 15, 15, 15, 0, 5);
         } else {
-            encoderDrive(DRIVE_SPEED, 20, 20, 20, 20, 0, 5);
-            encoderDrive(DRIVE_SPEED, 0, 0, 15, 15, 0, 5);
-            encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 0, 5);
+            encoderDrive(DRIVE_SPEED, -20, -20, -20, -20, 0, 5);
+            encoderDrive(DRIVE_SPEED, -15, -15, 0, 0, 0, 5);
+            encoderDrive(DRIVE_SPEED, 15, 15, 15, 15, 0, 5);
 
         }
         encoderDrive(0, 0, 0, 0, 0, 0, 1);
@@ -251,7 +250,7 @@ public class FinalBlue1 extends LinearOpMode {
             robot.backRDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-              sleep(250);   // optional pause after each move
+            sleep(250);   // optional pause after each move
         }
     }
 }
