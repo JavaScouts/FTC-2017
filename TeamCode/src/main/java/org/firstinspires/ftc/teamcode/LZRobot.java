@@ -59,8 +59,8 @@ public class LZRobot {
         s1 = map.servo.get("s1");
         s2 = map.servo.get("s2");
         color = map.colorSensor.get("Color");
-        range1 = map.get(ModernRoboticsI2cRangeSensor.class, "range1");
-        range2 = map.get(ModernRoboticsI2cRangeSensor.class, "range2");
+      //  range1 = map.get(ModernRoboticsI2cRangeSensor.class, "range1");
+        //range2 = map.get(ModernRoboticsI2cRangeSensor.class, "range2");
 
         //set directions
         backRDrive.setDirection(DcMotor.Direction.REVERSE);

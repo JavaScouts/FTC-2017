@@ -139,13 +139,13 @@ public class FinalBlue1 extends LinearOpMode {
         robot.s2.setPosition(1.0);
         encoderDrive(DRIVE_SPEED, 0, 0, 0, 0, 7, 5);
         if(robot.color.blue() > 0){
-            encoderDrive(DRIVE_SPEED, -5, -5, -5,-5, 0, 5);
-            robot.s2.setPosition(0);
             encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 0, 5);
+            robot.s2.setPosition(0);
+            encoderDrive(DRIVE_SPEED, -5, -5, -5, -5, 0, 5);
         } else {
-            encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 0, 5);
+            encoderDrive(DRIVE_SPEED, -5, -5, -5, -5, 0, 5);
             robot.s2.setPosition(0);
-            encoderDrive(DRIVE_SPEED, -5, -5, -5,-5, 0, 5);
+            encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 0, 5);
         }
         if (nav.whatRelic() == "LEFT"){
             encoderDrive(DRIVE_SPEED, 10, 10, 10, 10, 0, 5);

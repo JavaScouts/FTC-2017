@@ -139,13 +139,14 @@ public class FinalRed1 extends LinearOpMode {
         robot.s2.setPosition(1.0);
         encoderDrive(DRIVE_SPEED, 0, 0, 0, 0, 7, 5);
         if(robot.color.red() > 0){
-            encoderDrive(DRIVE_SPEED, -5, -5, -5,-5, 0, 5);
-            robot.s2.setPosition(0);
             encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 0, 5);
+            robot.s2.setPosition(0);
+            encoderDrive(DRIVE_SPEED, -5, -5, -5,-5, 0, 5);
         } else {
-            encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 0, 5);
-            robot.s2.setPosition(0);
             encoderDrive(DRIVE_SPEED, -5, -5, -5,-5, 0, 5);
+            robot.s2.setPosition(0);
+            encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 0, 5);
+
         }
         if (nav.whatRelic() == "LEFT"){
             encoderDrive(DRIVE_SPEED, -20, -20, -20, -20, 0, 5);
