@@ -148,7 +148,7 @@ public class FinalRed1 extends LinearOpMode {
             encoderDrive(DRIVE_SPEED, -5, -5, -5,-5, 0, 5);
         }
         if (nav.whatRelic() == "LEFT"){
-            encoderDrive(DRIVE_SPEED, -10, -10, -10, -10, 0, 5);
+            encoderDrive(DRIVE_SPEED, -20, -20, -20, -20, 0, 5);
             encoderDrive(DRIVE_SPEED, -15, -15, 0, 0, 0, 5);
             encoderDrive(DRIVE_SPEED, 15, 15, 15, 15, 0, 5);
         } else if (nav.whatRelic() == "CENTER"){
@@ -156,7 +156,7 @@ public class FinalRed1 extends LinearOpMode {
             encoderDrive(DRIVE_SPEED, -15, -15, 0, 0, 0, 5);
             encoderDrive(DRIVE_SPEED, 15, 15, 15, 15, 0, 5);
         } else {
-            encoderDrive(DRIVE_SPEED, -20, -20, -20, -20, 0, 5);
+            encoderDrive(DRIVE_SPEED, -10, -10, -10, -10, 0, 5);
             encoderDrive(DRIVE_SPEED, -15, -15, 0, 0, 0, 5);
             encoderDrive(DRIVE_SPEED, 15, 15, 15, 15, 0, 5);
 
