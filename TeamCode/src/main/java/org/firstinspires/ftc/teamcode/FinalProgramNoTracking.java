@@ -7,31 +7,29 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import static java.lang.Math.abs;
 
-@TeleOp(name = "NewDriveSys")
-public class NEWDRIVESYSTEM extends LinearOpMode {
+@TeleOp(name = "Final(NoTracking)")
+public class FinalProgramNoTracking extends LinearOpMode {
 
     LZRobot robot = new LZRobot();
-    //LZNavSys nav = new LZNavSys();
-
-    final double TARGET_DISTANCE = 400.0;
+    LZNavSys nav = new LZNavSys();
 
     public void runOpMode() {
 
         robot.init(hardwareMap, this);
-        //nav.initVuforia(this, robot);
+        nav.initVuforia(this, robot);
 
         telemetry.addData("Initialization", "Completed");
         telemetry.update();
 
         waitForStart();
 
-    //    nav.activateTracking();
+        nav.activateTracking();
 
         while (opModeIsActive()) {
 
-            robot.slide.setPower(-gamepad2.left_stick_y);
+            telemetry.addData("Relic:", nav.whatRelic());
 
-           // robot.s1.setPosition(abs(gamepad2.right_stick_x));
+            robot.slide.setPower(-gamepad2.left_stick_y);
 
             if (gamepad2.a) {
 
@@ -43,19 +41,11 @@ public class NEWDRIVESYSTEM extends LinearOpMode {
 
             }
 
-      //      if (nav.targetsAreVisible() && gamepad1.left_bumper) {
-                // Calculate automatic target approach
-        //        nav.cruiseControl(TARGET_DISTANCE);
-
-          //  } else {
-                // Drive the robot using the joysticks
-            //    robot.manualDrive();
-
-            //}
-            // Build telemetry messages with Navigation Information;
-            //nav.addNavTelemetry();
+            robot.manualDrive();
 
             robot.moveRobot();
+
+            robot.dpadDrive(1.0);
 
             telemetry.update();
 

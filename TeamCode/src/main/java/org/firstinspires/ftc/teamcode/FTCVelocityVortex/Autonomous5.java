@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.FTCVelocityVortex;
 
 
 import android.service.carrier.CarrierService;
@@ -14,11 +14,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 /**
  * Created by kyle on 10/16/2015.
  */
-@Autonomous(name = "Straight")
+@Autonomous(name = "Final Autonomous")
 @Disabled
-public class Straight extends OpMode {
-    //OpticalDistanceSensor Line;
-
+public class Autonomous5 extends OpMode {
     DcMotor FrontMotor1;
     DcMotor FrontMotor2;
     DcMotor BackMotor1;
@@ -27,13 +25,17 @@ public class Straight extends OpMode {
 
     ElapsedTime time;
 
-    static final double wait = 5.0;
 
-    static final double forward = 2.5;
+    static final double forward = 5.5;
+    static final double linee = 0.5;
+    static final double Linee2 = 0.5;
+    static final double wait = 1.5;
+    static final double right = 0.37;
+    static final double forward2 = 0.9;
 
 
 
-    enum State {wait, Straight, done}
+    enum State { Init, Straight, Follower, pause, Follower2, turn, go, done}
 
     ;
     State state;
@@ -43,7 +45,6 @@ public class Straight extends OpMode {
 
         FrontMotor1 = hardwareMap.dcMotor.get("FrontMotor1");
         FrontMotor2 = hardwareMap.dcMotor.get("FrontMotor2");
-        Arm = hardwareMap.dcMotor.get("Arm");
 
         BackMotor1 = hardwareMap.dcMotor.get("BackMotor1");
         BackMotor2 = hardwareMap.dcMotor.get("BackMotor2");
@@ -53,11 +54,16 @@ public class Straight extends OpMode {
         BackMotor1.setDirection(DcMotor.Direction.FORWARD);
         BackMotor2.setDirection(DcMotor.Direction.REVERSE);
 
+
+
+
+    }
+    @Override
+    public void start(){
         time = new ElapsedTime();
-        state = State.wait;
 
-
-
+        time.reset();
+        state = State.Init;
 
     }
 
@@ -69,17 +75,15 @@ public class Straight extends OpMode {
 
         switch (state) {
 
-            case wait:
+            case Init:
+                FrontMotor1.setPower(100);
+                FrontMotor2.setPower(100);
+                BackMotor1.setPower(100);
+                BackMotor2.setPower(100);
 
-                FrontMotor1.setPower(0);
-                FrontMotor2.setPower(0);
-                BackMotor1.setPower(0);
-                BackMotor2.setPower(0);
-                Arm.setPower(0);
+                if (currentTime > 0.5 ) {
 
-                if (currentTime > wait) {
-
-                    state = State.Straight;
+                    state = State.Follower;
                     time.reset();
                 }
                 break;
@@ -91,11 +95,24 @@ public class Straight extends OpMode {
                 BackMotor1.setPower(100);
                 BackMotor2.setPower(100);
 
-                if (currentTime > forward) {
+                if (currentTime > 0.5 ) {
 
-                    state = State.done;
+                    state = State.Follower;
                     time.reset();
                 }
+                break;
+
+            case Follower:
+                FrontMotor1.setPower(-0.5);
+                FrontMotor2.setPower(-0.5);
+                BackMotor1.setPower(-0.5);
+                BackMotor2.setPower(-0.5);
+
+                        if (currentTime > 0.5 ) {
+
+                            state = State.done;
+                            time.reset();
+                        }
                 break;
 
 
@@ -104,7 +121,6 @@ public class Straight extends OpMode {
                 FrontMotor2.setPower(0);
                 BackMotor1.setPower(0);
                 BackMotor2.setPower(0);
-                Arm.setPower(0);
 
 
 

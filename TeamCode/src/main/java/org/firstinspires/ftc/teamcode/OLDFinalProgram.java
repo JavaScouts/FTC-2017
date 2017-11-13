@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "Final Program")
 @Disabled
-public class FinalProgram extends OpMode {
+public class OLDFinalProgram extends OpMode {
 
     DcMotor FrontMotor1;
     DcMotor FrontMotor2;

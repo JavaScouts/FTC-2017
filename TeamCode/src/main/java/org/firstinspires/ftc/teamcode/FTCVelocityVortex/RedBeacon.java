@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.FTCVelocityVortex;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -13,11 +13,13 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-
-@Autonomous(name = "BlueBeacon")
+/**
+ * Created by Robotics Team 9986 on 1/2/2017.
+ */
+@Autonomous(name = "RedBeacon")
 @Disabled
 
-public class BlueBeacon extends OpMode {
+public class RedBeacon extends OpMode {
     DcMotor FrontMotor1;
     DcMotor FrontMotor2;
     DcMotor BackMotor1;
@@ -27,13 +29,20 @@ public class BlueBeacon extends OpMode {
     ColorSensor colorSensor;
     ModernRoboticsI2cRangeSensor rangeSensor;
     OpticalDistanceSensor ods;
+   /* double leftFrontPower = 0;
+    double leftBackPower = 0;
+    double rightFrontPower = 0;
+    double rightBackPower = 0;
+    double tolerance = 0.25;
+    double Gain = 0.05;*/
+
+
 
 
     ElapsedTime time;
 
 
-    enum State {Init, Straight1, backwar,forwar, Shoot, wCollect, wshoot, Turn1, range1, backward2, wallfollow, wait7, hit, backwards3, check, wait, secondstrafe, secondstrafe2, hit2, backwards4, check2, wait2, done}
-
+    enum State {Init, Straight1, backwar, forward, Shoot, wCollect, wshoot, backwards,  Turn1, range1, backward2, wallfollow, wait7, hit, backwards3, check, wait, secondstrafe, secondstrafe2, hit2, backwards4, check2, wait2, done}
     ;
 
     State state;
@@ -63,21 +72,30 @@ public class BlueBeacon extends OpMode {
         //time.reset();
         //state = State.Init;
 
+
+
+
+
     }
     @Override
-    public void start(){
+     public void start(){
         time = new ElapsedTime();
         time.reset();
         state = State.Init;
+
+
     }
+
 
     @Override
     public void loop() {
-        telemetry.addData("ColorSensorRed", colorSensor.red());
-        telemetry.addData("ColorSensorBlue", colorSensor.blue());
+        telemetry.addData("ColorSensor", colorSensor.red());
+        telemetry.addData("ColorSensor2Blue", colorSensor.blue());
         telemetry.addData("Range", rangeSensor.getDistance(DistanceUnit.CM));
         telemetry.addData("ODS", ods.getLightDetected());
         double currentTime = time.time();
+      //  double error = rangeSensor.getDistance(DistanceUnit.INCH) - 8;
+
 
         switch (state) {
             case Init:
@@ -86,7 +104,7 @@ public class BlueBeacon extends OpMode {
                 BackMotor1.setPower(0);
                 BackMotor2.setPower(0);
 
-                if (currentTime > 0.2 ) {
+                if (currentTime > 0.2) {
                     time.reset();
 
                     state = State.Straight1;
@@ -99,41 +117,38 @@ public class BlueBeacon extends OpMode {
                 BackMotor1.setPower(-0.5);
                 BackMotor2.setPower(-0.5);
 
-                if (currentTime > 0.3) {
+                if (currentTime > 0.5)  {
 
-                    state = State.forwar;
+                    state = State.forward;
                     time.reset();
                 }
 
                 break;
             case backwar:
-                if (rangeSensor.getDistance(DistanceUnit.CM) > 5)
-                {
+                if (rangeSensor.getDistance(DistanceUnit.CM) > 0.5) {
                     FrontMotor1.setPower(0.5);
                     FrontMotor2.setPower(0.5);
                     BackMotor1.setPower(0.5);
                     BackMotor2.setPower(0.5);
-                }
-                else
-                {
-                    state = State.forwar;
-                    time.reset();
-                }
+                } else{
+                        state = State.forward;
+                        time.reset();
+                    }
+
 
                 break;
-            case forwar:
+            case forward:
                 Arm.setPower(0);
                 FrontMotor1.setPower(-0.5);
                 FrontMotor2.setPower(-0.5);
                 BackMotor1.setPower(-0.5);
                 BackMotor2.setPower(-0.5);
-                if (currentTime > 0.6)  {
+                if (currentTime > 0.5)  {
 
                     state = State.Shoot;
                     time.reset();
                 }
                 break;
-
 
             case Shoot:
                 FrontMotor1.setPower(0);
@@ -141,7 +156,7 @@ public class BlueBeacon extends OpMode {
                 BackMotor1.setPower(0);
                 BackMotor2.setPower(0);
 
-                Arm.setPower(-0.95);
+                Arm.setPower(1.0);
 
                 if (currentTime > 0.5)  {
                     Arm.setPower(0);
@@ -170,30 +185,45 @@ public class BlueBeacon extends OpMode {
                 BackMotor1.setPower(0);
                 BackMotor2.setPower(0);
 
-                Arm.setPower(-0.95);
+                Arm.setPower(0.9);
 
                 if (currentTime > 0.5)  {
                     Arm.setPower(0);
 
-                    state = State.Turn1;
+                    state = State.backwards;
                     time.reset();
                 }
                 break;
 
+            case backwards:
+                FrontMotor1.setPower(0.5);
+                FrontMotor2.setPower(0.5);
+                BackMotor1.setPower(0.5);
+                BackMotor2.setPower(0.5);
+
+
+                if (currentTime > 0.01)  {
+
+                    state = State.Turn1;
+                    time.reset();
+                }
+
+                break;
             case Turn1:
                 Arm.setPower(0);
-                FrontMotor1.setPower(-0.5);
-                FrontMotor2.setPower(0);
-                BackMotor1.setPower(-0.5);
-                BackMotor2.setPower(0);
-                if (currentTime > 1.78)  {
+                FrontMotor1.setPower(0);
+                FrontMotor2.setPower(-0.5);
+                BackMotor1.setPower(0);
+                BackMotor2.setPower(-0.5);
+                if (currentTime > 1.85)  {
 
                     state = State.range1;
                     time.reset();
                 }
                 break;
-            case range1:
 
+
+            case range1:
                 if (rangeSensor.getDistance(DistanceUnit.CM) > 5)
                 {
                     FrontMotor1.setPower(0.2);
@@ -201,8 +231,8 @@ public class BlueBeacon extends OpMode {
                     BackMotor1.setPower(0.2);
                     BackMotor2.setPower(0.2);
                 }
-                else
-                {
+                else  {
+
                     state = State.backward2;
                     time.reset();
                 }
@@ -214,6 +244,9 @@ public class BlueBeacon extends OpMode {
                 BackMotor1.setPower(-0.5);
                 BackMotor2.setPower(-0.5);
 
+
+
+
                 if (currentTime > 0.3)  {
 
                     state = State.wallfollow;
@@ -224,11 +257,13 @@ public class BlueBeacon extends OpMode {
 
 
             case wallfollow:
-                BackMotor1.setPower(0.25);
-                FrontMotor1.setPower(-0.25);
-                BackMotor2.setPower(-0.25);
-                FrontMotor2.setPower(0.25);
+                BackMotor1.setPower(-0.25);
+                FrontMotor1.setPower(0.25);
+                BackMotor2.setPower(0.25);
+                FrontMotor2.setPower(-0.25);
+
                 if (ods.getLightDetected() > 0.5) {
+
                     state = State.hit;
                     time.reset();
 
@@ -239,6 +274,7 @@ public class BlueBeacon extends OpMode {
                 FrontMotor2.setPower(1.0);
                 BackMotor1.setPower(1.0);
                 BackMotor2.setPower(1.0);
+
 
                 if (currentTime > 0.94)  {
 
@@ -273,9 +309,8 @@ public class BlueBeacon extends OpMode {
                 }
                 break;
 
-
             case check:
-                if (colorSensor.blue() >= 1 && colorSensor.red() == 0){
+                if (colorSensor.red() >= 1 && colorSensor.blue() == 0){
                     state = state.secondstrafe;
                     time.reset();
                 }
@@ -283,7 +318,7 @@ public class BlueBeacon extends OpMode {
                     time.reset();
                     state = state.wait;
                 }
-                break;
+            break;
 
             case wait:
                 FrontMotor1.setPower(0);
@@ -300,24 +335,28 @@ public class BlueBeacon extends OpMode {
 
 
             case secondstrafe:
-                BackMotor1.setPower(0.25);
-                FrontMotor1.setPower(-0.25);
-                BackMotor2.setPower(-0.25);
-                FrontMotor2.setPower(0.25);
-                if (currentTime > 1.7)  {
+                BackMotor1.setPower(-0.5);
+                FrontMotor1.setPower(0.5);
+                BackMotor2.setPower(0.5);
+                FrontMotor2.setPower(-0.5);
+                if (currentTime > 1.0)  {
                     state = State.secondstrafe2;
                     time.reset();
                 }
 
                 break;
             case secondstrafe2:
-                BackMotor1.setPower(0.25);
-                FrontMotor1.setPower(-0.25);
-                BackMotor2.setPower(-0.25);
-                FrontMotor2.setPower(0.25);
+
+                BackMotor1.setPower(-0.25);
+                FrontMotor1.setPower(0.25);
+                BackMotor2.setPower(0.25);
+                FrontMotor2.setPower(-0.25);
+
                 if (ods.getLightDetected() > 0.4) {
+
                     state = State.hit2;
                     time.reset();
+
                 }
                 break;
             case hit2:
@@ -325,7 +364,7 @@ public class BlueBeacon extends OpMode {
                 FrontMotor2.setPower(1.0);
                 BackMotor1.setPower(1.0);
                 BackMotor2.setPower(1.0);
-                if (currentTime > 0.55)  {
+                if (currentTime > 0.5)  {
 
                     state = State.backwards4;
                     time.reset();
@@ -346,7 +385,7 @@ public class BlueBeacon extends OpMode {
 
                 break;
             case check2:
-                if (colorSensor.blue() >= 1 && colorSensor.red() == 0){
+                if (colorSensor.red() >= 1 && colorSensor.blue() == 0){
                     state = state.done;
                     time.reset();
                 }

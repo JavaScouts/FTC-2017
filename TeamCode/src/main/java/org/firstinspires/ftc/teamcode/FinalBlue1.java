@@ -80,10 +80,10 @@ public class FinalBlue1 extends LinearOpMode {
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
     static final double     DRIVE_SPEED             = 0.5;
-    static final double     TURN_SPEED              = 0.5;
+    //static final double     TURN_SPEED              = 0.5;
 
-    private double input;
-    private double prevRangeValue = 0.0;
+    //private double input;
+  //  private double prevRangeValue = 0.0;
 
 
     @Override
@@ -94,19 +94,14 @@ public class FinalBlue1 extends LinearOpMode {
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap, this);
+        nav.initVuforia(this, robot);
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");    //
         telemetry.update();
 
-        robot.leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.backLDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.backRDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        robot.leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.backLDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.backRDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Send telemetry message to indicate successful Encoder reset
         telemetry.addData("Path0",  "Starting at %7d :%7d",
@@ -118,34 +113,39 @@ public class FinalBlue1 extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
+
+        nav.activateTracking();
+
         telemetry.addData("ColorSensorRed", robot.color.red());
         telemetry.addData("ColorSensorBlue", robot.color.blue());
-        telemetry.addData("Range", robot.range1.getDistance(DistanceUnit.CM));
 
-        input = robot.range1.getDistance(DistanceUnit.CM);
-        if (input > 100.0 && prevRangeValue <= 100.0)
-        {
-            input = prevRangeValue;
-        }
-        else
-        {
-            prevRangeValue = input;
-        }
-        telemetry.update();
+        telemetry.addData("Relic:", nav.whatRelic());
+
+    //    telemetry.addData("Range", robot.range1.getDistance(DistanceUnit.CM));
+
+       // input = robot.range1.getDistance(DistanceUnit.CM);
+        //if (input > 100.0 && prevRangeValue <= 100.0)
+       // {
+        //    input = prevRangeValue;
+        //}
+        //else
+        //{
+          //  prevRangeValue = input;
+        //}
 
         // Step through each leg of the path,
-        // Note: Reverse movement is obtained by setting a negative distance (not speed)
+        // Note: Reverse movement is obtained by setting a negative distance (not speed);ku
         robot.s1.setPosition(1.0);
         robot.s2.setPosition(1.0);
-        encoderDrive(DRIVE_SPEED, 0, 0, 0, 0, 7, 5);
+        //encoderDrive(DRIVE_SPEED, 0, 0, 0, 0, 7, 5);
         if(robot.color.blue() > 0){
-            encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 0, 5);
+            encoderDrive(DRIVE_SPEED, 1, 1, 1, 1, 0, 5);
             robot.s2.setPosition(0);
-            encoderDrive(DRIVE_SPEED, -5, -5, -5, -5, 0, 5);
+            encoderDrive(DRIVE_SPEED, -1, -1, -1, -1, 0, 5);
         } else {
-            encoderDrive(DRIVE_SPEED, -5, -5, -5, -5, 0, 5);
+            encoderDrive(DRIVE_SPEED, -1, -1, -1, -1, 0, 5);
             robot.s2.setPosition(0);
-            encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 0, 5);
+            encoderDrive(DRIVE_SPEED, 1, 1, 1, 1, 0, 5);
         }
         if (nav.whatRelic() == "LEFT"){
             encoderDrive(DRIVE_SPEED, 10, 10, 10, 10, 0, 5);
@@ -202,11 +202,7 @@ public class FinalBlue1 extends LinearOpMode {
             robot.slide.setTargetPosition(newArmTarget);
 
             // Turn On RUN_TO_POSITION
-            robot.leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.backLDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.backRDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
             runtime.reset();
@@ -245,11 +241,8 @@ public class FinalBlue1 extends LinearOpMode {
             robot.slide.setPower(0);
 
             // Turn off RUN_TO_POSITION
-            robot.leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.backLDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.backRDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            robot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
               sleep(250);   // optional pause after each move
         }

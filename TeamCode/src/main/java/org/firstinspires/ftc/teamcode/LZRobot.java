@@ -56,19 +56,28 @@ public class LZRobot {
         backLDrive = map.dcMotor.get("bl");
         backRDrive = map.dcMotor.get("br");
         slide = map.dcMotor.get("Arm");
+        myOpMode.telemetry.addData("Initialization:", "Motors Initialized.");
+        myOpMode.telemetry.update();
         s1 = map.servo.get("s1");
         s2 = map.servo.get("s2");
+        myOpMode.telemetry.addData("Initialization:", "Servos Initialized.");
+        myOpMode.telemetry.update();
         color = map.colorSensor.get("Color");
-      //  range1 = map.get(ModernRoboticsI2cRangeSensor.class, "range1");
+        //range1 = map.get(ModernRoboticsI2cRangeSensor.class, "range1");
         //range2 = map.get(ModernRoboticsI2cRangeSensor.class, "range2");
+        myOpMode.telemetry.addData("Initialization:", "Sensors Initialized.");
+        myOpMode.telemetry.update();
 
         //set directions
         backRDrive.setDirection(DcMotor.Direction.REVERSE);
         s1.setDirection(Servo.Direction.REVERSE);
 
-        moveRobot(0,0,0);
+        //STOP EVERYTHING
+        moveRobot(0, 0, 0);
         s1.setPosition(0.4);
         s2.setPosition(0);
+        myOpMode.telemetry.addData("Initialization:", "Complete!");
+        myOpMode.telemetry.update();
 
     }
 
@@ -77,45 +86,46 @@ public class LZRobot {
     public void move(String dir, float power) {
 
         //self explanatory
-        switch (dir) {
-            case "left":
+            switch (dir) {
+                case "left":
 
-                backLDrive.setPower(power);
-                leftDrive.setPower(-power);
-                backRDrive.setPower(-power);
-                rightDrive.setPower(power);
+                    backLDrive.setPower(power);
+                    leftDrive.setPower(-power);
+                    backRDrive.setPower(-power);
+                    rightDrive.setPower(power);
 
-                break;
-            case "right":
+                    break;
+                case "right":
 
-                backLDrive.setPower(-power);
-                leftDrive.setPower(power);
-                backRDrive.setPower(power);
-                rightDrive.setPower(-power);
+                    backLDrive.setPower(-power);
+                    leftDrive.setPower(power);
+                    backRDrive.setPower(power);
+                    rightDrive.setPower(-power);
 
-                break;
-            case "forwards":
+                    break;
+                case "forwards":
 
-                backLDrive.setPower(power);
-                leftDrive.setPower(power);
-                backRDrive.setPower(power);
-                rightDrive.setPower(power);
+                    backLDrive.setPower(power);
+                    leftDrive.setPower(power);
+                    backRDrive.setPower(power);
+                    rightDrive.setPower(power);
 
-                break;
-            case "backwards":
+                    break;
+                case "backwards":
 
-                backLDrive.setPower(-power);
-                leftDrive.setPower(-power);
-                backRDrive.setPower(-power);
-                rightDrive.setPower(-power);
+                    backLDrive.setPower(-power);
+                    leftDrive.setPower(-power);
+                    backRDrive.setPower(-power);
+                    rightDrive.setPower(-power);
 
-                break;
+                    break;
         }
 
     }
 
     //rotate function, takes direction and power
-    public void rotate(String dir, double power) {
+    public void rotate(String dir, double power)
+    {
 
         //self explanatory rotation for mecanum wheels
         if(dir.equals("cclock")) {
@@ -286,6 +296,39 @@ public class LZRobot {
         myOpMode.telemetry.addData("Axes  ", "A[%+5.2f], L[%+5.2f], Y[%+5.2f]", driveAxial, driveLateral, driveYaw);
         myOpMode.telemetry.addData("Wheels", "L[%+5.2f], R[%+5.2f], BL[%+5.2f], BR[%+5.2f]", left, right, backL, backR);
 
+    }
+
+    public void dpadDrive(double power) {
+
+        if(myOpMode.gamepad1.dpad_left) {
+
+            backLDrive.setPower(power);
+            leftDrive.setPower(-power);
+            backRDrive.setPower(-power);
+            rightDrive.setPower(power);
+
+        } else if(myOpMode.gamepad1.dpad_right) {
+
+            backLDrive.setPower(-power);
+            leftDrive.setPower(power);
+            backRDrive.setPower(power);
+            rightDrive.setPower(-power);
+
+        } else if(myOpMode.gamepad1.dpad_up) {
+
+            backLDrive.setPower(power);
+            leftDrive.setPower(power);
+            backRDrive.setPower(power);
+            rightDrive.setPower(power);
+
+        } else if(myOpMode.gamepad1.dpad_down) {
+
+            backLDrive.setPower(-power);
+            leftDrive.setPower(-power);
+            backRDrive.setPower(-power);
+            rightDrive.setPower(-power);
+
+        }
     }
 
     public void setAxial(double axial)      {driveAxial = Range.clip(axial, -1, 1);}

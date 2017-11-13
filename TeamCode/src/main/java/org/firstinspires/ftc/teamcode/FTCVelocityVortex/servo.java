@@ -1,6 +1,7 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.FTCVelocityVortex;
 
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -8,7 +9,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 /**
  * Created by KyleG on 1/3/2016.5.
- */@TeleOp(name = "Arm")
+ */
+@TeleOp(name = "Arm")
+@Disabled
 public class servo extends OpMode {
 
     DcMotor Arm;
