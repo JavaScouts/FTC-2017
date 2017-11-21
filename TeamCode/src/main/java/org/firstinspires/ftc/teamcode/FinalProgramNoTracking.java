@@ -11,35 +11,32 @@ import static java.lang.Math.abs;
 public class FinalProgramNoTracking extends LinearOpMode {
 
     LZRobot robot = new LZRobot();
-    LZNavSys nav = new LZNavSys();
+    //LZNavSys nav = new LZNavSys();
 
     public void runOpMode() {
 
         robot.init(hardwareMap, this);
-        nav.initVuforia(this, robot);
+       // nav.initVuforia(this, robot);
 
         telemetry.addData("Initialization", "Completed");
         telemetry.update();
 
         waitForStart();
 
-        nav.activateTracking();
+      //  nav.activateTracking();
 
         while (opModeIsActive()) {
 
-            telemetry.addData("Relic:", nav.whatRelic());
+         //   telemetry.addData("Relic:", nav.whatRelic());
+
+            if (gamepad1.a){
+                robot.s2.setPosition(0.7);
+            } else if (gamepad1.b){
+                robot.s2.setPosition(0);
+            }
 
             robot.slide.setPower(-gamepad2.left_stick_y);
-
-            if (gamepad2.a) {
-
-                robot.s1.setPosition(1.0);
-
-            } else if (gamepad2.b) {
-
-                robot.s1.setPosition(0.3);
-
-            }
+            robot.Arm.setPower(-gamepad2.right_stick_y * 0.35);
 
             robot.manualDrive();
 
@@ -51,5 +48,4 @@ public class FinalProgramNoTracking extends LinearOpMode {
 
         }
     }
-
 }

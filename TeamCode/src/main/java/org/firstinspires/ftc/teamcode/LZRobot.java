@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
+import java.sql.Time;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.abs;
@@ -24,15 +26,17 @@ public class LZRobot {
     public DcMotor rightDrive;
     public DcMotor backLDrive;
     public DcMotor backRDrive;
-    public Servo s1;
+   // public Servo s1;
     public Servo s2;
     public DcMotor slide;
+    public DcMotor Arm;
     public ModernRoboticsI2cRangeSensor range1;
     public ModernRoboticsI2cRangeSensor range2;
     public ColorSensor color;
     public float Y1;
     public float X1;
     public float X2;
+    public int[] positions = {};
     private double  driveAxial      = 0 ;   // Positive is forward
     private double  driveLateral    = 0 ;   // Positive is right
     private double  driveYaw        = 0 ;   // Positive is CCW
@@ -55,26 +59,32 @@ public class LZRobot {
         rightDrive = map.dcMotor.get("fr");
         backLDrive = map.dcMotor.get("bl");
         backRDrive = map.dcMotor.get("br");
-        slide = map.dcMotor.get("Arm");
+        slide = map.dcMotor.get("slider");
+        Arm = map.dcMotor.get("Arm");
+
         myOpMode.telemetry.addData("Initialization:", "Motors Initialized.");
         myOpMode.telemetry.update();
-        s1 = map.servo.get("s1");
+
+        //s1 = map.servo.get("s1");
         s2 = map.servo.get("s2");
+
         myOpMode.telemetry.addData("Initialization:", "Servos Initialized.");
         myOpMode.telemetry.update();
+
         color = map.colorSensor.get("Color");
         //range1 = map.get(ModernRoboticsI2cRangeSensor.class, "range1");
         //range2 = map.get(ModernRoboticsI2cRangeSensor.class, "range2");
+
         myOpMode.telemetry.addData("Initialization:", "Sensors Initialized.");
         myOpMode.telemetry.update();
 
         //set directions
         backRDrive.setDirection(DcMotor.Direction.REVERSE);
-        s1.setDirection(Servo.Direction.REVERSE);
+        //s1.setDirection(Servo.Direction.REVERSE);
 
         //STOP EVERYTHING
         moveRobot(0, 0, 0);
-        s1.setPosition(0.4);
+        //s1.setPosition(0.4);
         s2.setPosition(0);
         myOpMode.telemetry.addData("Initialization:", "Complete!");
         myOpMode.telemetry.update();
@@ -124,7 +134,7 @@ public class LZRobot {
     }
 
     //rotate function, takes direction and power
-    public void rotate(String dir, double power)
+    public void rotateTime(String dir, double power, long time)
     {
 
         //self explanatory rotation for mecanum wheels
@@ -134,6 +144,11 @@ public class LZRobot {
             leftDrive.setPower(-power);
             backRDrive.setPower(power);
             rightDrive.setPower(power);
+            try {
+                TimeUnit.SECONDS.sleep(time);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
         } else if(dir.equals("clock")) {
 
@@ -141,6 +156,11 @@ public class LZRobot {
             leftDrive.setPower(power);
             backRDrive.setPower(-power);
             rightDrive.setPower(-power);
+            try {
+                TimeUnit.SECONDS.sleep(time);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
         }
 
@@ -349,4 +369,41 @@ public class LZRobot {
 
     }
 
+    public int[] getCurrentPosition() {
+
+        positions = new int[]{
+
+                leftDrive.getCurrentPosition(),
+
+                rightDrive.getCurrentPosition(),
+
+                backLDrive.getCurrentPosition(),
+
+                backRDrive.getCurrentPosition(),
+
+                slide.getCurrentPosition(),
+
+        };
+
+        return positions;
+
+    }
+
+    /*  motor integer numbers for \/ getCurrentPosition(int motor)
+            1(l)        2(r)
+                5(slide)
+
+
+
+            3(bl)       4(br)
+
+     */
+
+    public int getCurrentPosition(int motor) {
+
+        motor = motor-1;
+
+        return positions[motor];
+
+    }
 }

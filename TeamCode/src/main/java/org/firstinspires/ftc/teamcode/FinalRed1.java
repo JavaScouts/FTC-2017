@@ -133,7 +133,7 @@ public class FinalRed1 extends LinearOpMode {
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        robot.s1.setPosition(1.0);
+        //robot.s1.setPosition(1.0);
         robot.s2.setPosition(1.0);
         encoderDrive(DRIVE_SPEED, 0, 0, 0, 0, 7, 5);
         if(robot.color.red() > 0){

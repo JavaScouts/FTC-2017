@@ -15,13 +15,13 @@ public class LZData extends LinearOpMode {
     DcMotor FrontMotor2;
     DcMotor BackMotor1;
     DcMotor BackMotor2;
-    DcMotor Arm;
+    DcMotor slide;
 
     public void runOpMode() {
 
         FrontMotor1 = hardwareMap.dcMotor.get("fl");
         FrontMotor2 = hardwareMap.dcMotor.get("fr");
-        Arm = hardwareMap.dcMotor.get("Arm");
+        slide = hardwareMap.dcMotor.get("Arm");
         BackMotor1 = hardwareMap.dcMotor.get("bl");
         BackMotor2 = hardwareMap.dcMotor.get("br");
 
@@ -31,11 +31,13 @@ public class LZData extends LinearOpMode {
         FrontMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BackMotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BackMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         FrontMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         FrontMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         BackMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         BackMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         waitForStart();
 
@@ -51,10 +53,14 @@ public class LZData extends LinearOpMode {
             BackMotor1.setPower(lB);
             BackMotor2.setPower(rB);
 
-            telemetry.addData("Gamepad Powers", "LF[%+5.2f], RF[%+5.2f], LB[%+5.2f], RB[%+5.2f]", lF, rF, lB, rB);
+            /////slidePos = slide.getCurrentPosition();
+
+            telemetry.addData("Gamepad Powers", "LF[%+5.2f], RF[%+5.2f], LB[%+5.2f]", lF, rF, lB);
+            //telemetry.addData("ArmClicks", slidePos);
             telemetry.update();
 
         }
+
 
     }
 
