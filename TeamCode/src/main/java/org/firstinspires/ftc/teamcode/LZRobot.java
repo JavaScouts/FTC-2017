@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import java.sql.Time;
@@ -26,13 +27,20 @@ public class LZRobot {
     public DcMotor rightDrive;
     public DcMotor backLDrive;
     public DcMotor backRDrive;
-   // public Servo s1;
+    public Servo s1;
     public Servo s2;
+    private ElapsedTime runtime = new ElapsedTime();
+    static final double     COUNTS_PER_MOTOR_REV    = 1120 ;    // eg: TETRIX Motor Encoder
+    static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
+    static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
+    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (WHEEL_DIAMETER_INCHES * 3.1415);
     public DcMotor slide;
     public DcMotor Arm;
     public ModernRoboticsI2cRangeSensor range1;
     public ModernRoboticsI2cRangeSensor range2;
     public ColorSensor color;
+
     public float Y1;
     public float X1;
     public float X2;
@@ -129,6 +137,118 @@ public class LZRobot {
                     rightDrive.setPower(-power);
 
                     break;
+        }
+
+    }
+
+    public void moveDist(String dir, double power, double distance, double timeoutS) {
+
+        int newLeftTarget;
+        int newRightTarget;
+        int newBackLTarget;
+        int newBackRTarget;
+        int newArmTarget;
+
+        // Ensure that the opmode is still active
+        if (myOpMode.opModeIsActive()) {
+
+            newLeftTarget = 0;
+            newBackLTarget = 0;
+            newRightTarget = 0;
+            newBackRTarget = 0;
+
+            // Determine new target position, and pass to motor controller
+            if (dir.equals("forwards")) {
+
+                newLeftTarget = leftDrive.getCurrentPosition() + (int)(distance * COUNTS_PER_INCH);
+                newBackLTarget = backLDrive.getCurrentPosition() + (int)(distance * COUNTS_PER_INCH);
+                newRightTarget = rightDrive.getCurrentPosition() + (int)(distance * COUNTS_PER_INCH);
+                newBackRTarget = backRDrive.getCurrentPosition() + (int)(distance * COUNTS_PER_INCH);
+
+            } else if (dir.equals("backwards")) {
+
+                newLeftTarget = leftDrive.getCurrentPosition() - (int)(distance * COUNTS_PER_INCH);
+                newBackLTarget = backLDrive.getCurrentPosition() - (int)(distance * COUNTS_PER_INCH);
+                newRightTarget = rightDrive.getCurrentPosition() - (int)(distance * COUNTS_PER_INCH);
+                newBackRTarget = backRDrive.getCurrentPosition() - (int)(distance * COUNTS_PER_INCH);
+
+            } else if (dir.equals("left")) {
+
+                newLeftTarget = leftDrive.getCurrentPosition() - (int)(distance * COUNTS_PER_INCH);
+                newBackLTarget = backLDrive.getCurrentPosition() + (int)(distance * COUNTS_PER_INCH);
+                newRightTarget = rightDrive.getCurrentPosition() + (int)(distance * COUNTS_PER_INCH);
+                newBackRTarget = backRDrive.getCurrentPosition() - (int)(distance * COUNTS_PER_INCH);
+
+            } else if (dir.equals("right")) {
+
+                newLeftTarget = leftDrive.getCurrentPosition() + (int)(distance * COUNTS_PER_INCH);
+                newBackLTarget = backLDrive.getCurrentPosition() - (int)(distance * COUNTS_PER_INCH);
+                newRightTarget = rightDrive.getCurrentPosition() - (int)(distance * COUNTS_PER_INCH);
+                newBackRTarget = backRDrive.getCurrentPosition() + (int)(distance * COUNTS_PER_INCH);
+
+            } else if (dir.equals("cclock")) {
+
+                newLeftTarget = leftDrive.getCurrentPosition() - (int)(distance * COUNTS_PER_INCH);
+                newBackLTarget = backLDrive.getCurrentPosition() - (int)(distance * COUNTS_PER_INCH);
+                newRightTarget = rightDrive.getCurrentPosition() + (int)(distance * COUNTS_PER_INCH);
+                newBackRTarget = backRDrive.getCurrentPosition() + (int)(distance * COUNTS_PER_INCH);
+
+            } else if (dir.equals("clock")) {
+
+                newLeftTarget = leftDrive.getCurrentPosition() + (int)(distance * COUNTS_PER_INCH);
+                newBackLTarget = backLDrive.getCurrentPosition() + (int)(distance * COUNTS_PER_INCH);
+                newRightTarget = rightDrive.getCurrentPosition() - (int)(distance * COUNTS_PER_INCH);
+                newBackRTarget = backRDrive.getCurrentPosition() - (int)(distance * COUNTS_PER_INCH);
+
+            }
+
+            newArmTarget = slide.getCurrentPosition() + (int)(distance * COUNTS_PER_INCH);
+
+            leftDrive.setTargetPosition(newLeftTarget);
+            backLDrive.setTargetPosition(newBackLTarget);
+            rightDrive.setTargetPosition(newRightTarget);
+            backRDrive.setTargetPosition(newBackRTarget);
+            slide.setTargetPosition(newArmTarget);
+
+            // Turn On RUN_TO_POSITION
+            setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // reset the timeout time and start motion.
+            runtime.reset();
+            leftDrive.setPower(Math.abs(power));
+            backLDrive.setPower(Math.abs(power));
+            rightDrive.setPower(Math.abs(power));
+            backRDrive.setPower(Math.abs(power));
+            slide.setPower(Math.abs(power));
+
+            // keep looping while we are still active, and there is time left, and both motors are running.
+            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
+            // its target position, the motion will stop.  This is "safer" in the event that the robot will
+            // always end the motion as soon as possible.
+            // However, if you require that BOTH motors have finished their moves before the robot continues
+            // onto the next step, use (isBusy() || isBusy()) in the loop test.
+            while (myOpMode.opModeIsActive() &&
+                    (runtime.seconds() < timeoutS) &&
+                    (leftDrive.isBusy() || backLDrive.isBusy() || rightDrive.isBusy() || backRDrive.isBusy() || slide.isBusy())) {
+
+                // Display it for the driver.
+                myOpMode.telemetry.addData("Path1",  "Running to %7d :%7d", newLeftTarget, newBackLTarget,  newRightTarget, newBackRTarget, newArmTarget);
+                myOpMode.telemetry.addData("Path2",  "Running at %7d :%7d",
+                        leftDrive.getCurrentPosition(),
+                        backLDrive.getCurrentPosition(),
+                        rightDrive.getCurrentPosition(),
+                        backRDrive.getCurrentPosition(),
+                        slide.getCurrentPosition());
+                myOpMode.telemetry.update();
+            }
+
+            // Stop all motion;
+            moveRobot(0, 0, 0);
+            slide.setPower(0);
+
+            // Turn off RUN_TO_POSITION
+            setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         }
 
     }
@@ -288,7 +408,7 @@ public class LZRobot {
     }
 
     public void moveRobot() {
-        // calculate required motor speeds to acheive axis motions
+        // calculate required motor powers to acheive axis motions
         double backL = driveAxial - driveLateral + driveYaw;
         double backR = driveAxial + driveLateral - driveYaw;
         double left = driveAxial + driveLateral + driveYaw;
