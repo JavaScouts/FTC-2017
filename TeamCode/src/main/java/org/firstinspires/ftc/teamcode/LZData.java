@@ -48,14 +48,14 @@ public class LZData extends LinearOpMode {
             float lB = -gamepad2.left_stick_y;
             float rB = -gamepad2.right_stick_y;
 
-            FrontMotor1.setPower(lF);
-            FrontMotor2.setPower(rF);
-            BackMotor1.setPower(lB);
-            BackMotor2.setPower(rB);
+            FrontMotor1.setPower(lF * 0.3);
+            FrontMotor2.setPower(rF * 0.3);
+            BackMotor1.setPower(lB * 0.3);
+            BackMotor2.setPower(rB* 0.3);
 
             /////slidePos = slide.getCurrentPosition();
 
-            telemetry.addData("Gamepad Powers", "LF[%+5.2f], RF[%+5.2f], LB[%+5.2f]", lF, rF, lB);
+            telemetry.addData("Gamepad Powers", "LF[%+5.2f], RF[%+5.2f], LB[%+5.2f], RB[%+5.2f]", lF, rF, lB, rB);
             //telemetry.addData("ArmClicks", slidePos);
             telemetry.update();
 

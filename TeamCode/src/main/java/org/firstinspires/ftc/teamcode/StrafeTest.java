@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -8,83 +10,34 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 /**
  * Created by Liam on 11/20/2017.
  */
+@Autonomous(name="AutoTest")
+public class StrafeTest extends LinearOpMode {
 
-public class StrafeTest extends OpMode {
+    LZRobot robot = new LZRobot();
 
-    DcMotor fl;
-    DcMotor fr;
-    DcMotor bl;
-    DcMotor br;
+    public void runOpMode() {
 
-    private final double ticksPerRevolution = 1120;
-    private double prevTime;
-    private int prevflEncoderPosition;
-    private int prevfrEncoderPosition;
-    private int prevblEncoderPosition;
-    private int prevbrEncoderPosition;
+        robot.init(hardwareMap, this);
 
-    private final double drivePidKp = 1;    // Tuning variable for PID.
-    private final double drivePidTi = 1.0;  // Eliminate integral error in 1 sec.
-    private final double drivePidTd = 0.1;  // Account for error in 0.1 sec.
-    private final double drivePidIntMax = 0.75;  // Limit to max speed.
+        waitForStart();
 
-    private Pid flDrive = null;
-    private Pid frDrive = null;
-    private Pid blDrive = null;
-    private Pid brDrive = null;
+        telemetry.addData("Left", "5IN");
+        telemetry.update();
 
-    public void init() {
+        robot.moveDist("left", 0.7, 5, 5);
 
-        fl = hardwareMap.dcMotor.get("fl");
-        fr = hardwareMap.dcMotor.get("fr");
-        bl = hardwareMap.dcMotor.get("bl");
-        br = hardwareMap.dcMotor.get("br");
+        sleep(250);
 
-        br.setDirection(DcMotorSimple.Direction.REVERSE);
+        telemetry.addData("Right", "5IN");
+        telemetry.update();
 
-        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.moveDist("right", 0.7, 5, 5);
 
-        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        telemetry.addData("Forwards", "5IN");
+        telemetry.update();
 
-        prevTime = 0;
-        prevflEncoderPosition = fl.getCurrentPosition();
-        prevfrEncoderPosition = fr.getCurrentPosition();
-        prevblEncoderPosition = bl.getCurrentPosition();
-        prevbrEncoderPosition = br.getCurrentPosition();
-
-        flDrive = new Pid(drivePidKp, drivePidTi, drivePidTd, -drivePidIntMax, drivePidIntMax);
-        frDrive = new Pid(drivePidKp, drivePidTi, drivePidTd, -drivePidIntMax, drivePidIntMax);
-        blDrive = new Pid(drivePidKp, drivePidTi, drivePidTd, -drivePidIntMax, drivePidIntMax);
-        brDrive = new Pid(drivePidKp, drivePidTi, drivePidTd, -drivePidIntMax, drivePidIntMax);
+        robot.moveDist("forwards", 1.0, 5, 5);
 
     }
-
-    public void loop() {
-
-        double deltaTime = time - prevTime;
-        double flSpeed = (fl.getCurrentPosition() - prevflEncoderPosition) /
-                deltaTime;
-        double frSpeed = (fr.getCurrentPosition() - prevfrEncoderPosition) /
-                deltaTime;
-        double blSpeed = (bl.getCurrentPosition() - prevblEncoderPosition) /
-                deltaTime;
-        double brSpeed = (br.getCurrentPosition() - prevbrEncoderPosition) /
-                deltaTime;
-
-        prevTime = time;
-        prevflEncoderPosition = fl.getCurrentPosition();
-        prevfrEncoderPosition = fr.getCurrentPosition();
-        prevblEncoderPosition = bl.getCurrentPosition();
-        prevbrEncoderPosition = br.getCurrentPosition();
-
-
-    }
-
 
 }

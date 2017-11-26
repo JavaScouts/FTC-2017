@@ -153,7 +153,6 @@ public class FinalBlue2 extends LinearOpMode {
             encoderDrive(DRIVE_SPEED, 15, 15, 15, 15, 0, 5);
             encoderDrive(DRIVE_SPEED, -15, 15, 15, -15, 0, 5);
             encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 0, 5);
-
         } else {
             encoderDrive(DRIVE_SPEED, 15, 15, 15, 15, 0, 5);
             encoderDrive(DRIVE_SPEED, -20, 20, 20, -20, 0, 5);

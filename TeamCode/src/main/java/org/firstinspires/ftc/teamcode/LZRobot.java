@@ -38,8 +38,9 @@ public class LZRobot {
     public DcMotor slide;
     public DcMotor Arm;
     public ModernRoboticsI2cRangeSensor range1;
-    public ModernRoboticsI2cRangeSensor range2;
     public ColorSensor color;
+    public Servo s5;
+    public Servo s6;
 
     public float Y1;
     public float X1;
@@ -75,13 +76,16 @@ public class LZRobot {
 
         //s1 = map.servo.get("s1");
         s2 = map.servo.get("s2");
+        s5 = map.servo.get("leftS");
+        s6 = map.servo.get("rightS");
 
         myOpMode.telemetry.addData("Initialization:", "Servos Initialized.");
         myOpMode.telemetry.update();
 
         color = map.colorSensor.get("Color");
-        //range1 = map.get(ModernRoboticsI2cRangeSensor.class, "range1");
+        range1 = map.get(ModernRoboticsI2cRangeSensor.class, "range1");
         //range2 = map.get(ModernRoboticsI2cRangeSensor.class, "range2");
+        color.enableLed(true);
 
         myOpMode.telemetry.addData("Initialization:", "Sensors Initialized.");
         myOpMode.telemetry.update();
@@ -93,7 +97,7 @@ public class LZRobot {
         //STOP EVERYTHING
         moveRobot(0, 0, 0);
         //s1.setPosition(0.4);
-        s2.setPosition(0);
+        s2.setPosition(0.7);
         myOpMode.telemetry.addData("Initialization:", "Complete!");
         myOpMode.telemetry.update();
 
@@ -101,7 +105,7 @@ public class LZRobot {
 
     //function move takes a direction and a power
     //probably a better way to do this
-    public void move(String dir, float power) {
+    public void move(String dir, double power) {
 
         //self explanatory
             switch (dir) {
@@ -254,7 +258,7 @@ public class LZRobot {
     }
 
     //rotate function, takes direction and power
-    public void rotateTime(String dir, double power, long time)
+    public void rotateTime(String dir, double power, long timeMS)
     {
 
         //self explanatory rotation for mecanum wheels
@@ -265,7 +269,7 @@ public class LZRobot {
             backRDrive.setPower(power);
             rightDrive.setPower(power);
             try {
-                TimeUnit.SECONDS.sleep(time);
+                TimeUnit.MILLISECONDS.sleep(timeMS);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -277,7 +281,7 @@ public class LZRobot {
             backRDrive.setPower(-power);
             rightDrive.setPower(-power);
             try {
-                TimeUnit.SECONDS.sleep(time);
+                TimeUnit.MILLISECONDS.sleep(timeMS);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -311,7 +315,7 @@ public class LZRobot {
 
     }
 
-    public void moveTime(String dir, double power, long timeS) {
+    public void moveTime(String dir, double power, long timeMS) {
 
         if(dir == "left") {
 
@@ -320,7 +324,7 @@ public class LZRobot {
             backRDrive.setPower(-power);
             rightDrive.setPower(power);
             try {
-                TimeUnit.SECONDS.sleep(timeS);
+                TimeUnit.MILLISECONDS.sleep(timeMS);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -334,7 +338,7 @@ public class LZRobot {
             backRDrive.setPower(power);
             rightDrive.setPower(-power);
             try {
-                TimeUnit.SECONDS.sleep(timeS);
+                TimeUnit.MILLISECONDS.sleep(timeMS);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -347,7 +351,7 @@ public class LZRobot {
             backRDrive.setPower(power);
             rightDrive.setPower(power);
             try {
-                TimeUnit.SECONDS.sleep(timeS);
+                TimeUnit.MILLISECONDS.sleep(timeMS);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -360,14 +364,49 @@ public class LZRobot {
             backRDrive.setPower(-power);
             rightDrive.setPower(-power);
             try {
-                TimeUnit.SECONDS.sleep(timeS);
+                TimeUnit.MILLISECONDS.sleep(timeMS);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            moveRobot(0, 0, 0);
+
+        } else if (dir == "sliderUp"){
+
+            slide.setPower(power);
+            try{
+                TimeUnit.MILLISECONDS.sleep(timeMS);
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
             moveRobot(0,0,0);
+        } else if (dir == "slidedown"){
 
+            slide.setPower(-power);
+            try{
+                TimeUnit.MILLISECONDS.sleep(timeMS);
+            }catch (InterruptedException e){
+                e.printStackTrace();
+          }
+         moveRobot(0,0,0);
+      } else if (dir == "glyphup"){
+
+        Arm.setPower(power);
+        try{
+            TimeUnit.MILLISECONDS.sleep(timeMS);
+        }catch (InterruptedException e){
+            e.printStackTrace();
         }
+        moveRobot(0,0,0);
+    } else if (dir == "glyphdown"){
 
+        Arm.setPower(-power);
+        try{
+            TimeUnit.MILLISECONDS.sleep(timeMS);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        moveRobot(0,0,0);
+            }
     }
     
     public void manualDrive()  {

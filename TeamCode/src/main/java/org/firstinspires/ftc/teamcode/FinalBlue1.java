@@ -44,41 +44,71 @@ public class FinalBlue1 extends LinearOpMode {
     LZRobot robot = new LZRobot();  // Use a Pushbot's hardware
     LZNavSys nav = new LZNavSys();
 
-    static final double     DRIVE_SPEED             = 0.5;
-    //static final double     TURN_SPEED              = 0.5;
+    static final double     DRIVE_SPEED             = 0.25;
+    static final double     TURN_SPEED              = 0.25;
+    double input;
+    double prevRangeValue = 0.0;
+
 
     //private double input;
   //  private double prevRangeValue = 0.0;
 
     public void runOpMode() {
 
-        robot.s2.setPosition(1.0);
+        robot.init(hardwareMap, this);
+        nav.initVuforia(this, robot);
+        input = robot.range1.getDistance(DistanceUnit.CM);
+
+        waitForStart();
+
+
+        nav.activateTracking();
+
+        robot.s2.setPosition(0);
         //encoderDrive(DRIVE_SPEED, 0, 0, 0, 0, 7, 5);
+
+        sleep(2000);
+        if (input > 100.0 && prevRangeValue <= 100.0)
+        {
+            input = prevRangeValue;
+        }
+        else
+        {
+            prevRangeValue = input;
+        }
+
         if(robot.color.blue() > 0){
-            robot.moveTime("forwards", DRIVE_SPEED, 1);
-            robot.s2.setPosition(0);
-            robot.moveTime("backwards", DRIVE_SPEED, 1);
+            robot.moveTime("forwards", DRIVE_SPEED, 200);
+            robot.s2.setPosition(0.7);
+            robot.moveTime("stop", 0, 1000);
+            robot.moveTime("backwards", DRIVE_SPEED, 300);
         } else {
-            robot.moveTime("backwards", DRIVE_SPEED, 1);
-            robot.s2.setPosition(0);
-            robot.moveTime("forwards", DRIVE_SPEED, 1);
+            robot.moveTime("backwards", DRIVE_SPEED, 350);
+            robot.s2.setPosition(0.7);
+            robot.moveTime("stop", 0, 1000);
+            robot.moveTime("forwards", DRIVE_SPEED, 350);
         }
         if (nav.whatRelic() == "LEFT"){
-            robot.moveTime("forwards", DRIVE_SPEED, 3);
-            robot.rotateTime("cclock", DRIVE_SPEED, 1);
-            robot.moveTime("forwards", DRIVE_SPEED, 1);
+          while (input != 47) {
+              robot.move("forwards", DRIVE_SPEED);
+          }
+            robot.rotateTime("cclock", TURN_SPEED, 300);
+            robot.moveTime("forwards", DRIVE_SPEED, 250);
         } else if (nav.whatRelic() == "CENTER"){
             robot.moveTime("forwards", DRIVE_SPEED, 4);
-            robot.rotateTime("cclock", DRIVE_SPEED, 1);
+            robot.rotateTime("cclock", TURN_SPEED, 1);
             robot.moveTime("forwards", DRIVE_SPEED, 1);
         } else {
             robot.moveTime("forwards", DRIVE_SPEED, 5);
-            robot.rotateTime("cclock", DRIVE_SPEED, 1);
+            robot.rotateTime("cclock", TURN_SPEED, 1);
             robot.moveTime("forwards", DRIVE_SPEED, 1);
 
         }
 
         robot.moveRobot(0, 0, 0);
+
+
+
 
     }
 }
